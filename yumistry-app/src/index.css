@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+@theme {
+  --color-fresh-green: #2D5A27;  /* Deep Forest Green */
+  --color-leaf: #84cc16;         /* Bright Lime Green */
+  --color-organic: #f0fdf4;      /* Super Light Mint Background */
+  --color-earth: #78350f;        /* Rich Soil Brown */
+  --color-sun: #facc15;          /* Fresh Lemon Yellow */
+}
+
+@layer base {
+  body {
+    @apply bg-organic text-fresh-green antialiased;
+    font-family: 'Quicksand', sans-serif;
+  }
+}
