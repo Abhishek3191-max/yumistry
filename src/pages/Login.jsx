@@ -1,36 +1,86 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Phone, Lock, Leaf, Eye, EyeOff } from 'lucide-react';
+import { Phone, Lock, Leaf, Eye, EyeOff, Mail } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const Login = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     phone: '',
+    email: '',
     password: ''
   });
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrors({});
     const newErrors = {};
     
-    if (!formData.phone) newErrors.phone = 'Phone number required';
-    if (!formData.password) newErrors.password = 'Password required';
+    // Validation
+    const phoneRegex = /^[6-9]\d{9}$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+    if (!formData.phone) {
+      newErrors.phone = 'Phone number required';
+    } else if (!phoneRegex.test(formData.phone)) {
+      newErrors.phone = 'Enter valid 10-digit number';
+    }
+    
+    if (!formData.email) {
+      newErrors.email = 'Email required';
+    } else if (!emailRegex.test(formData.email)) {
+      newErrors.email = 'Enter valid email';
+    }
+    
+    if (!formData.password) {
+      newErrors.password = 'Password required';
+    } else if (formData.password.length < 6) {
+      newErrors.password = 'Min 6 characters';
+    }
     
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
     
-    // Check if user exists in localStorage
-    const userData = localStorage.getItem('userData');
-    if (userData) {
-      navigate('/home');
-    } else {
-      setErrors({ general: 'Account not found. Please register first.' });
-    }
+    setIsLoading(true);
+    
+    // Simulate API call
+    setTimeout(() => {
+      // Demo account
+      if (formData.phone === '9876543210' && formData.email === 'demo@yumistry.com' && formData.password === 'demo123') {
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('userData', JSON.stringify({
+          name: 'Demo User',
+          phone: '9876543210',
+          email: 'demo@yumistry.com',
+          password: 'demo123'
+        }));
+        navigate('/home');
+        return;
+      }
+
+      const userData = localStorage.getItem('userData');
+      
+      if (userData) {
+        const user = JSON.parse(userData);
+        
+        // Verify credentials
+        if (user.phone === formData.phone && user.email === formData.email && user.password === formData.password) {
+          localStorage.setItem('isLoggedIn', 'true');
+          navigate('/home');
+        } else {
+          setErrors({ general: 'Invalid credentials' });
+          setIsLoading(false);
+        }
+      } else {
+        setErrors({ general: 'Account not found. Please register first.' });
+        setIsLoading(false);
+      }
+    }, 800);
   };
 
   const handleChange = (e) => {
@@ -60,16 +110,15 @@ const Login = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="w-full max-w-sm bg-white/80 backdrop-blur-xl p-6 sm:p-8 rounded-2xl shadow-xl border border-white relative z-10"
+        className="w-full max-w-md bg-white/90 backdrop-blur-xl p-8 rounded-3xl shadow-2xl border border-white/50 relative z-10"
       >
         {/* Header */}
-        <div className="text-center mb-6">
-          <div className="flex items-center justify-center gap-2 mb-1">
-            <Leaf className="text-leaf" size={24} strokeWidth={2.5} fill="#84cc16" />
-            <h1 className="text-2xl font-black tracking-tight text-fresh-green">Yumistry</h1>
+        <div className="text-center mb-8">
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <Leaf className="text-leaf" size={28} strokeWidth={2.5} fill="#84cc16" />
+            <h1 className="text-3xl font-black tracking-tight text-fresh-green">Yumistry</h1>
           </div>
-          <p className="text-xs font-semibold text-earth/70 tracking-[0.2em] uppercase mb-4">Chemistry of Freshness</p>
-          <h2 className="text-lg font-bold text-fresh-green/80">Welcome Back</h2>
+          <p className="text-sm text-fresh-green/60 font-medium">Login to your account</p>
         </div>
         
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -81,47 +130,77 @@ const Login = () => {
           )}
 
           {/* Phone Input */}
-          <div className="relative">
-            <Phone className="absolute left-3 top-1/2 -translate-y-1/2 text-fresh-green/40" size={18} />
-            <input 
-              type="tel" 
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              placeholder="WhatsApp Number" 
-              className={`w-full pl-10 pr-4 py-3 rounded-lg bg-white border-2 outline-none transition-all placeholder:text-fresh-green/30 font-medium text-sm ${
-                errors.phone ? 'border-red-300 focus:border-red-400' : 'border-fresh-green/10 focus:border-leaf/40'
-              }`}
-            />
-            {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
+          <div>
+            <label className="block text-sm font-semibold text-fresh-green/70 mb-2">Phone Number</label>
+            <div className="relative">
+              <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-fresh-green/40" size={20} />
+              <input 
+                type="tel" 
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                placeholder="Enter 10-digit number" 
+                maxLength="10"
+                disabled={isLoading}
+                className={`w-full pl-12 pr-4 py-3.5 rounded-xl bg-white border-2 outline-none transition-all placeholder:text-fresh-green/30 font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed ${
+                  errors.phone ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-leaf'
+                }`}
+              />
+            </div>
+            {errors.phone && <p className="text-red-500 text-xs mt-1.5 ml-1">{errors.phone}</p>}
+          </div>
+
+          {/* Email Input */}
+          <div>
+            <label className="block text-sm font-semibold text-fresh-green/70 mb-2">Email Address</label>
+            <div className="relative">
+              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-fresh-green/40" size={20} />
+              <input 
+                type="email" 
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Enter your email" 
+                disabled={isLoading}
+                className={`w-full pl-12 pr-4 py-3.5 rounded-xl bg-white border-2 outline-none transition-all placeholder:text-fresh-green/30 font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed ${
+                  errors.email ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-leaf'
+                }`}
+              />
+            </div>
+            {errors.email && <p className="text-red-500 text-xs mt-1.5 ml-1">{errors.email}</p>}
           </div>
 
           {/* Password Input */}
-          <div className="relative">
-            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-fresh-green/40" size={18} />
-            <input 
-              type={showPassword ? 'text' : 'password'}
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="Password" 
-              className={`w-full pl-10 pr-12 py-3 rounded-lg bg-white border-2 outline-none transition-all placeholder:text-fresh-green/30 font-medium text-sm ${
-                errors.password ? 'border-red-300 focus:border-red-400' : 'border-fresh-green/10 focus:border-leaf/40'
-              }`}
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-fresh-green/40 hover:text-fresh-green"
-            >
-              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-            </button>
-            {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
+          <div>
+            <label className="block text-sm font-semibold text-fresh-green/70 mb-2">Password</label>
+            <div className="relative">
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-fresh-green/40" size={20} />
+              <input 
+                type={showPassword ? 'text' : 'password'}
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="Enter password"
+                disabled={isLoading}
+                className={`w-full pl-12 pr-12 py-3.5 rounded-xl bg-white border-2 outline-none transition-all placeholder:text-fresh-green/30 font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed ${
+                  errors.password ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-leaf'
+                }`}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                disabled={isLoading}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-fresh-green/40 hover:text-fresh-green disabled:opacity-50"
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
+            {errors.password && <p className="text-red-500 text-xs mt-1.5 ml-1">{errors.password}</p>}
           </div>
 
           {/* Forgot Password */}
-          <div className="text-right">
-            <button type="button" className="text-xs font-bold text-fresh-green/60 hover:text-leaf transition-colors">
+          <div className="flex justify-end">
+            <button type="button" className="text-sm font-bold text-leaf hover:text-fresh-green transition-colors">
               Forgot Password?
             </button>
           </div>
@@ -129,23 +208,50 @@ const Login = () => {
           {/* Submit Button */}
           <motion.button
             type="submit"
-            whileTap={{ scale: 0.98 }}
-            className="w-full bg-gradient-to-r from-fresh-green to-leaf text-white py-3 rounded-lg font-bold text-sm shadow-lg hover:shadow-xl transition-all mt-6"
+            disabled={isLoading}
+            whileTap={{ scale: isLoading ? 1 : 0.97 }}
+            className="w-full bg-gradient-to-r from-fresh-green to-leaf text-white py-4 rounded-xl font-bold text-base shadow-lg hover:shadow-xl transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
-            Login
+            {isLoading ? (
+              <>
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                  className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
+                />
+                Logging in...
+              </>
+            ) : (
+              'Login'
+            )}
           </motion.button>
 
-          {/* Register Link */}
-          <p className="text-center text-xs text-fresh-green/60 font-medium mt-4">
-            Don't have an account?{' '}
-            <button
-              type="button"
-              onClick={() => navigate('/register')}
-              className="text-leaf font-bold hover:underline"
-            >
-              Sign Up
-            </button>
-          </p>
+          {/* Divider */}
+          <div className="relative my-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-200"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-4 bg-white text-fresh-green/50 font-medium">OR</span>
+            </div>
+          </div>
+
+          {/* Create Account */}
+          <motion.button
+            type="button"
+            onClick={() => navigate('/register')}
+            whileTap={{ scale: 0.97 }}
+            className="w-full bg-white border-2 border-leaf text-leaf py-4 rounded-xl font-bold text-base hover:bg-leaf/5 transition-all flex items-center justify-center gap-2"
+          >
+            Create New Account
+          </motion.button>
+
+          {/* Demo Info */}
+          <div className="mt-6 p-3 bg-leaf/5 rounded-lg border border-leaf/20">
+            <p className="text-xs text-center text-fresh-green/60 font-medium">
+              Demo: 9876543210 • demo@yumistry.com • demo123
+            </p>
+          </div>
         </form>
       </motion.div>
     </div>
@@ -153,3 +259,7 @@ const Login = () => {
 };
 
 export default Login;
+
+
+
+

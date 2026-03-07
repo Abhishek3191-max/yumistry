@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, Phone, MapPin, Leaf, Store, Building2 } from 'lucide-react';
+import { User, Phone, Mail, MapPin, Leaf, Lock, Eye, EyeOff } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const Register = () => {
@@ -8,20 +8,68 @@ const Register = () => {
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
-    address: '',
-    userType: 'Retailer'
+    email: '',
+    password: '',
+    address: ''
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (formData.name && formData.phone && formData.address) {
-      localStorage.setItem('userData', JSON.stringify(formData));
-      navigate('/home');
+    setErrors({});
+    const newErrors = {};
+
+    // Validation
+    if (!formData.name || formData.name.length < 3) {
+      newErrors.name = 'Name must be at least 3 characters';
     }
+
+    const phoneRegex = /^[6-9]\d{9}$/;
+    if (!formData.phone) {
+      newErrors.phone = 'Phone number required';
+    } else if (!phoneRegex.test(formData.phone)) {
+      newErrors.phone = 'Enter valid 10-digit number';
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formData.email) {
+      newErrors.email = 'Email required';
+    } else if (!emailRegex.test(formData.email)) {
+      newErrors.email = 'Enter valid email';
+    }
+
+    if (!formData.password) {
+      newErrors.password = 'Password required';
+    } else if (formData.password.length < 6) {
+      newErrors.password = 'Min 6 characters';
+    }
+
+    if (!formData.address || formData.address.length < 10) {
+      newErrors.address = 'Enter complete address';
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    setIsLoading(true);
+
+    // Simulate API call
+    setTimeout(() => {
+      localStorage.setItem('userData', JSON.stringify(formData));
+      localStorage.setItem('isLoggedIn', 'true');
+      navigate('/home');
+    }, 800);
   };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    if (errors[e.target.name]) {
+      setErrors({ ...errors, [e.target.name]: '' });
+    }
   };
 
   return (
@@ -44,106 +92,150 @@ const Register = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="w-full max-w-sm bg-white/80 backdrop-blur-xl p-6 sm:p-8 rounded-2xl shadow-xl border border-white relative z-10"
+        className="w-full max-w-md bg-white/90 backdrop-blur-xl p-8 rounded-3xl shadow-2xl border border-white/50 relative z-10"
       >
         {/* Header */}
-        <div className="text-center mb-6">
-          <div className="flex items-center justify-center gap-2 mb-1">
-            <Leaf className="text-leaf" size={24} strokeWidth={2.5} fill="#84cc16" />
-            <h1 className="text-2xl font-black tracking-tight text-fresh-green">Yumistry</h1>
+        <div className="text-center mb-8">
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <Leaf className="text-leaf" size={28} strokeWidth={2.5} fill="#84cc16" />
+            <h1 className="text-3xl font-black tracking-tight text-fresh-green">Yumistry</h1>
           </div>
-          <p className="text-xs font-semibold text-earth/70 tracking-[0.2em] uppercase mb-4">Chemistry of Freshness</p>
-          <h2 className="text-lg font-bold text-fresh-green/80">Create Account</h2>
+          <p className="text-sm text-fresh-green/60 font-medium">Create your account</p>
         </div>
         
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Name Input */}
-          <div className="relative">
-            <User className="absolute left-3 top-1/2 -translate-y-1/2 text-fresh-green/40" size={18} />
-            <input 
-              type="text" 
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              placeholder="Full Name" 
-              required
-              className="w-full pl-10 pr-4 py-3 rounded-lg bg-white border-2 border-fresh-green/10 outline-none focus:border-leaf/40 transition-all placeholder:text-fresh-green/30 font-medium text-sm"
-            />
+          <div>
+            <label className="block text-sm font-semibold text-fresh-green/70 mb-2">Full Name</label>
+            <div className="relative">
+              <User className="absolute left-4 top-1/2 -translate-y-1/2 text-fresh-green/40" size={20} />
+              <input 
+                type="text" 
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Enter your full name"
+                disabled={isLoading}
+                className={`w-full pl-12 pr-4 py-3.5 rounded-xl bg-white border-2 outline-none transition-all placeholder:text-fresh-green/30 font-medium text-sm disabled:opacity-50 ${
+                  errors.name ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-leaf'
+                }`}
+              />
+            </div>
+            {errors.name && <p className="text-red-500 text-xs mt-1.5 ml-1">{errors.name}</p>}
           </div>
 
           {/* Phone Input */}
-          <div className="relative">
-            <Phone className="absolute left-3 top-1/2 -translate-y-1/2 text-fresh-green/40" size={18} />
-            <input 
-              type="tel" 
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              placeholder="WhatsApp Number" 
-              required
-              className="w-full pl-10 pr-4 py-3 rounded-lg bg-white border-2 border-fresh-green/10 outline-none focus:border-leaf/40 transition-all placeholder:text-fresh-green/30 font-medium text-sm"
-            />
+          <div>
+            <label className="block text-sm font-semibold text-fresh-green/70 mb-2">Phone Number</label>
+            <div className="relative">
+              <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-fresh-green/40" size={20} />
+              <input 
+                type="tel" 
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                placeholder="Enter 10-digit number"
+                maxLength="10"
+                disabled={isLoading}
+                className={`w-full pl-12 pr-4 py-3.5 rounded-xl bg-white border-2 outline-none transition-all placeholder:text-fresh-green/30 font-medium text-sm disabled:opacity-50 ${
+                  errors.phone ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-leaf'
+                }`}
+              />
+            </div>
+            {errors.phone && <p className="text-red-500 text-xs mt-1.5 ml-1">{errors.phone}</p>}
+          </div>
+
+          {/* Email Input */}
+          <div>
+            <label className="block text-sm font-semibold text-fresh-green/70 mb-2">Email Address</label>
+            <div className="relative">
+              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-fresh-green/40" size={20} />
+              <input 
+                type="email" 
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Enter your email"
+                disabled={isLoading}
+                className={`w-full pl-12 pr-4 py-3.5 rounded-xl bg-white border-2 outline-none transition-all placeholder:text-fresh-green/30 font-medium text-sm disabled:opacity-50 ${
+                  errors.email ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-leaf'
+                }`}
+              />
+            </div>
+            {errors.email && <p className="text-red-500 text-xs mt-1.5 ml-1">{errors.email}</p>}
+          </div>
+
+          {/* Password Input */}
+          <div>
+            <label className="block text-sm font-semibold text-fresh-green/70 mb-2">Password</label>
+            <div className="relative">
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-fresh-green/40" size={20} />
+              <input 
+                type={showPassword ? 'text' : 'password'}
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="Create password"
+                disabled={isLoading}
+                className={`w-full pl-12 pr-12 py-3.5 rounded-xl bg-white border-2 outline-none transition-all placeholder:text-fresh-green/30 font-medium text-sm disabled:opacity-50 ${
+                  errors.password ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-leaf'
+                }`}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                disabled={isLoading}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-fresh-green/40 hover:text-fresh-green disabled:opacity-50"
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
+            {errors.password && <p className="text-red-500 text-xs mt-1.5 ml-1">{errors.password}</p>}
           </div>
 
           {/* Address Input */}
-          <div className="relative">
-            <MapPin className="absolute left-3 top-4 text-fresh-green/40" size={18} />
-            <textarea 
-              name="address"
-              value={formData.address}
-              onChange={handleChange}
-              placeholder="Delivery Address" 
-              required
-              rows="2"
-              className="w-full pl-10 pr-4 py-3 rounded-lg bg-white border-2 border-fresh-green/10 outline-none focus:border-leaf/40 transition-all placeholder:text-fresh-green/30 font-medium text-sm resize-none"
-            />
-          </div>
-
-          {/* User Type Selection */}
           <div>
-            <label className="block text-xs font-bold text-fresh-green/70 mb-2">Account Type</label>
-            <div className="grid grid-cols-2 gap-2">
-              <motion.button
-                type="button"
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setFormData({ ...formData, userType: 'Retailer' })}
-                className={`p-2 rounded-lg border-2 transition-all ${
-                  formData.userType === 'Retailer'
-                    ? 'bg-gradient-to-br from-fresh-green to-leaf text-white border-leaf shadow-md'
-                    : 'bg-white border-fresh-green/20 text-fresh-green hover:border-leaf/40'
+            <label className="block text-sm font-semibold text-fresh-green/70 mb-2">Delivery Address</label>
+            <div className="relative">
+              <MapPin className="absolute left-4 top-4 text-fresh-green/40" size={20} />
+              <textarea 
+                name="address"
+                value={formData.address}
+                onChange={handleChange}
+                placeholder="Enter complete delivery address"
+                disabled={isLoading}
+                rows="2"
+                className={`w-full pl-12 pr-4 py-3.5 rounded-xl bg-white border-2 outline-none transition-all placeholder:text-fresh-green/30 font-medium text-sm resize-none disabled:opacity-50 ${
+                  errors.address ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-leaf'
                 }`}
-              >
-                <Store size={16} className="mx-auto mb-1" />
-                <p className="text-xs font-bold">Retailer</p>
-              </motion.button>
-
-              <motion.button
-                type="button"
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setFormData({ ...formData, userType: 'Wholesaler' })}
-                className={`p-2 rounded-lg border-2 transition-all ${
-                  formData.userType === 'Wholesaler'
-                    ? 'bg-gradient-to-br from-fresh-green to-leaf text-white border-leaf shadow-md'
-                    : 'bg-white border-fresh-green/20 text-fresh-green hover:border-leaf/40'
-                }`}
-              >
-                <Building2 size={16} className="mx-auto mb-1" />
-                <p className="text-xs font-bold">Wholesaler</p>
-              </motion.button>
+              />
             </div>
+            {errors.address && <p className="text-red-500 text-xs mt-1.5 ml-1">{errors.address}</p>}
           </div>
 
           {/* Submit Button */}
           <motion.button
             type="submit"
-            whileTap={{ scale: 0.98 }}
-            className="w-full bg-gradient-to-r from-fresh-green to-leaf text-white py-3 rounded-lg font-bold text-sm shadow-lg hover:shadow-xl transition-all mt-6"
+            disabled={isLoading}
+            whileTap={{ scale: isLoading ? 1 : 0.97 }}
+            className="w-full bg-gradient-to-r from-fresh-green to-leaf text-white py-4 rounded-xl font-bold text-base shadow-lg hover:shadow-xl transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
-            Create Account
+            {isLoading ? (
+              <>
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                  className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
+                />
+                Creating Account...
+              </>
+            ) : (
+              'Create Account'
+            )}
           </motion.button>
 
           {/* Login Link */}
-          <p className="text-center text-xs text-fresh-green/60 font-medium mt-4">
+          <p className="text-center text-sm text-fresh-green/60 font-medium mt-6">
             Already have an account?{' '}
             <button
               type="button"
