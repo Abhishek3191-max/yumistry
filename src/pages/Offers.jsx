@@ -2,10 +2,13 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Tag, Copy, Check, Zap, Gift, Percent, Clock, Star, Trophy, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useDarkMode } from '../context/DarkModeContext';
+import Header from '../components/Header';
 import BottomNav from '../components/BottomNav';
 
 const Offers = () => {
   const navigate = useNavigate();
+  const { darkMode } = useDarkMode();
   const [copiedCode, setCopiedCode] = useState('');
   const [isSpinning, setIsSpinning] = useState(false);
   const [showPrize, setShowPrize] = useState(false);
@@ -81,16 +84,20 @@ const Offers = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f0fdf4] via-white to-[#ecfccb] pb-20">
-      {/* Header */}
-      <div className="bg-white/90 backdrop-blur-xl border-b border-fresh-green/10 sticky top-0 z-10">
-        <div className="p-4">
-          <h1 className="text-2xl font-black text-fresh-green">Offers & Deals</h1>
-          <p className="text-sm text-fresh-green/60 font-medium">{offers.length} offers available</p>
-        </div>
-      </div>
+    <div className={`min-h-screen pb-20 transition-colors ${
+      darkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-[#f0fdf4] via-white to-[#ecfccb]'
+    }`}>
+      <Header />
+      
+      <div className="p-4">
+        <h2 className={`text-2xl font-black mb-1 ${
+          darkMode ? 'text-white' : 'text-fresh-green'
+        }`}>Offers & Deals</h2>
+        <p className={`text-sm font-medium mb-6 ${
+          darkMode ? 'text-gray-400' : 'text-fresh-green/60'
+        }`}>{offers.length} offers available</p>
 
-      <div className="p-4 space-y-6">
+        <div className="space-y-6">
         {/* Lucky Spin Wheel */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
@@ -340,6 +347,7 @@ const Offers = () => {
             </div>
           </div>
         </motion.div>
+        </div>
       </div>
 
       <BottomNav />

@@ -1,10 +1,15 @@
 import { useNavigate } from 'react-router-dom';
-import { User, Phone, Mail, MapPin, Package, Heart, Wallet, Settings, LogOut, ChevronRight, Leaf } from 'lucide-react';
+import { User, Phone, Mail, MapPin, Package, Heart, Wallet, Settings, LogOut, ChevronRight, Leaf, Edit3 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { useDarkMode } from '../context/DarkModeContext';
 import BottomNav from '../components/BottomNav';
 
 const Account = () => {
   const navigate = useNavigate();
+  const { darkMode } = useDarkMode();
+  const [isEditing, setIsEditing] = useState(false);
+  const [editData, setEditData] = useState({});
   
   // Get user data
   const userData = JSON.parse(localStorage.getItem('userData') || '{}');
@@ -16,6 +21,16 @@ const Account = () => {
     navigate('/login');
   };
 
+  const handleEdit = () => {
+    setEditData(userData);
+    setIsEditing(true);
+  };
+
+  const handleSave = () => {
+    localStorage.setItem('userData', JSON.stringify(editData));
+    setIsEditing(false);
+  };
+
   const menuItems = [
     { icon: Package, label: 'My Orders', path: '/orders', color: 'text-blue-600' },
     { icon: Heart, label: 'Wishlist', path: '/wishlist', color: 'text-red-500' },
@@ -25,9 +40,13 @@ const Account = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f0fdf4] via-white to-[#ecfccb] pb-20">
+    <div className={`min-h-screen pb-20 transition-colors ${
+      darkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-[#f0fdf4] via-white to-[#ecfccb]'
+    }`}>
       {/* Header */}
-      <div className="bg-gradient-to-r from-fresh-green to-leaf p-6 pb-8">
+      <div className={`bg-gradient-to-r p-6 pb-8 ${
+        darkMode ? 'from-gray-800 to-gray-700' : 'from-fresh-green to-leaf'
+      }`}>
         <div className="flex items-center gap-4">
           <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center">
             <User size={40} className="text-leaf" />
@@ -46,27 +65,67 @@ const Account = () => {
           animate={{ opacity: 1, y: 0 }}
           className="bg-white rounded-2xl p-4 shadow-lg border border-fresh-green/10 mb-4"
         >
-          <h3 className="font-black text-fresh-green mb-3">Profile Details</h3>
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="font-black text-fresh-green">Profile Details</h3>
+            <button
+              onClick={isEditing ? handleSave : handleEdit}
+              className={`px-3 py-1 rounded-lg text-sm font-bold flex items-center gap-1 ${
+                isEditing 
+                  ? 'bg-fresh-green text-white' 
+                  : 'bg-fresh-green/10 text-fresh-green'
+              }`}
+            >
+              <Edit3 size={14} />
+              {isEditing ? 'Save' : 'Edit'}
+            </button>
+          </div>
           <div className="space-y-3">
             <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
               <User size={18} className="text-fresh-green/60" />
               <div className="flex-1">
                 <p className="text-xs text-fresh-green/60">Name</p>
-                <p className="font-bold text-sm text-fresh-green">{userData.name || 'Not provided'}</p>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={editData.name || ''}
+                    onChange={(e) => setEditData({...editData, name: e.target.value})}
+                    className="font-bold text-sm text-fresh-green bg-transparent border-b border-fresh-green/30 focus:outline-none focus:border-fresh-green w-full"
+                  />
+                ) : (
+                  <p className="font-bold text-sm text-fresh-green">{userData.name || 'Not provided'}</p>
+                )}
               </div>
             </div>
             <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
               <Phone size={18} className="text-fresh-green/60" />
               <div className="flex-1">
                 <p className="text-xs text-fresh-green/60">Phone</p>
-                <p className="font-bold text-sm text-fresh-green">{userData.phone || 'Not provided'}</p>
+                {isEditing ? (
+                  <input
+                    type="tel"
+                    value={editData.phone || ''}
+                    onChange={(e) => setEditData({...editData, phone: e.target.value})}
+                    className="font-bold text-sm text-fresh-green bg-transparent border-b border-fresh-green/30 focus:outline-none focus:border-fresh-green w-full"
+                  />
+                ) : (
+                  <p className="font-bold text-sm text-fresh-green">{userData.phone || 'Not provided'}</p>
+                )}
               </div>
             </div>
             <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
               <Mail size={18} className="text-fresh-green/60" />
               <div className="flex-1">
                 <p className="text-xs text-fresh-green/60">Email</p>
-                <p className="font-bold text-sm text-fresh-green">{userData.email || 'Not provided'}</p>
+                {isEditing ? (
+                  <input
+                    type="email"
+                    value={editData.email || ''}
+                    onChange={(e) => setEditData({...editData, email: e.target.value})}
+                    className="font-bold text-sm text-fresh-green bg-transparent border-b border-fresh-green/30 focus:outline-none focus:border-fresh-green w-full"
+                  />
+                ) : (
+                  <p className="font-bold text-sm text-fresh-green">{userData.email || 'Not provided'}</p>
+                )}
               </div>
             </div>
           </div>

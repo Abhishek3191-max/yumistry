@@ -2,10 +2,13 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Package, Clock, CheckCircle, ChevronRight, ShoppingBag } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useDarkMode } from '../context/DarkModeContext';
+import Header from '../components/Header';
 import BottomNav from '../components/BottomNav';
 
 const Orders = () => {
   const navigate = useNavigate();
+  const { darkMode } = useDarkMode();
   
   // Mock orders data
   const [orders] = useState([
@@ -53,16 +56,18 @@ const Orders = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f0fdf4] via-white to-[#ecfccb] pb-20">
-      {/* Header */}
-      <div className="bg-white/90 backdrop-blur-xl border-b border-fresh-green/10 sticky top-0 z-10">
-        <div className="p-4">
-          <h1 className="text-2xl font-black text-fresh-green">My Orders</h1>
-          <p className="text-sm text-fresh-green/60 font-medium">{orders.length} orders</p>
-        </div>
-      </div>
-
+    <div className={`min-h-screen pb-20 transition-colors ${
+      darkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-[#f0fdf4] via-white to-[#ecfccb]'
+    }`}>
+      <Header />
+      
       <div className="p-4">
+        <h2 className={`text-2xl font-black mb-1 ${
+          darkMode ? 'text-white' : 'text-fresh-green'
+        }`}>My Orders</h2>
+        <p className={`text-sm font-medium mb-6 ${
+          darkMode ? 'text-gray-400' : 'text-fresh-green/60'
+        }`}>{orders.length} orders</p>
         {orders.length > 0 ? (
           <div className="space-y-3">
             {orders.map((order, index) => {
@@ -105,7 +110,37 @@ const Orders = () => {
                     <ChevronRight size={20} className="text-fresh-green/40" />
                   </div>
 
-                  <button className="w-full mt-3 py-2 border-2 border-leaf text-leaf rounded-xl font-bold text-sm hover:bg-leaf/5 transition-all">
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      // Get order items from localStorage or mock data
+                      const orderItems = [
+                        { id: 1, name: 'Hybrid Tomato', price: 28, quantity: 2 },
+                        { id: 2, name: 'Potato (Aalu)', price: 38, quantity: 1 },
+                        { id: 3, name: 'Onion (Pyaz)', price: 35, quantity: 1 }
+                      ];
+                      
+                      // Add items to cart
+                      const existingCart = JSON.parse(localStorage.getItem('cart') || '[]');
+                      const updatedCart = [...existingCart];
+                      
+                      orderItems.forEach(item => {
+                        const existingItem = updatedCart.find(cartItem => cartItem.id === item.id);
+                        if (existingItem) {
+                          existingItem.quantity += item.quantity;
+                        } else {
+                          updatedCart.push(item);
+                        }
+                      });
+                      
+                      localStorage.setItem('cart', JSON.stringify(updatedCart));
+                      
+                      // Show success message and navigate
+                      alert('Items added to cart!');
+                      navigate('/cart');
+                    }}
+                    className="w-full mt-3 py-2 border-2 border-leaf text-leaf rounded-xl font-bold text-sm hover:bg-leaf/5 transition-all"
+                  >
                     Reorder
                   </button>
                 </motion.div>

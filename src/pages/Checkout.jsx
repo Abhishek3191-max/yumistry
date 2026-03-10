@@ -3,10 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, MapPin, Phone, User, Wallet, CreditCard, Leaf, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useCart } from '../context/CartContext';
+import { useDarkMode } from '../context/DarkModeContext';
 
 const Checkout = () => {
   const navigate = useNavigate();
   const { cart, getTotalItems, getSubtotal, getTotalSavings, getDeliveryFee, getTotal } = useCart();
+  const { darkMode } = useDarkMode();
   const [paymentMethod, setPaymentMethod] = useState('cod');
   const [deliveryAddress, setDeliveryAddress] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
@@ -38,17 +40,17 @@ const Checkout = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f0fdf4] via-white to-[#ecfccb] pb-32">
+    <div className={`min-h-screen pb-32 ${darkMode ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900' : 'bg-gradient-to-br from-[#f0fdf4] via-white to-[#ecfccb]'}`}>
       {/* Header */}
-      <div className="bg-white/90 backdrop-blur-xl border-b border-fresh-green/10 sticky top-0 z-10">
+      <div className={`backdrop-blur-xl border-b sticky top-0 z-10 ${darkMode ? 'bg-gray-800/90 border-gray-700' : 'bg-white/90 border-fresh-green/10'}`}>
         <div className="flex items-center justify-between p-4">
           <div className="flex items-center gap-3">
-            <button onClick={() => navigate('/cart')} className="p-2 hover:bg-fresh-green/10 rounded-lg transition-colors">
+            <button onClick={() => navigate('/cart')} className={`p-2 rounded-lg transition-colors ${darkMode ? 'hover:bg-gray-700' : 'hover:bg-fresh-green/10'}`}>
               <ArrowLeft size={22} className="text-fresh-green" />
             </button>
             <div>
-              <h1 className="text-xl font-black text-fresh-green">Checkout</h1>
-              <p className="text-xs text-fresh-green/60 font-medium">{getTotalItems()} items</p>
+              <h1 className={`text-xl font-black ${darkMode ? 'text-white' : 'text-fresh-green'}`}>Checkout</h1>
+              <p className={`text-xs font-medium ${darkMode ? 'text-gray-400' : 'text-fresh-green/60'}`}>{getTotalItems()} items</p>
             </div>
           </div>
           <Leaf className="text-leaf" size={24} fill="#84cc16" />
@@ -60,18 +62,18 @@ const Checkout = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-2xl p-4 shadow-sm border border-fresh-green/10"
+          className={`rounded-2xl p-4 shadow-sm border ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-fresh-green/10'}`}
         >
           <div className="flex items-center gap-2 mb-3">
             <MapPin size={20} className="text-leaf" />
-            <h3 className="font-black text-fresh-green">Delivery Address</h3>
+            <h3 className={`font-black ${darkMode ? 'text-white' : 'text-fresh-green'}`}>Delivery Address</h3>
           </div>
           <textarea
             value={deliveryAddress}
             onChange={(e) => setDeliveryAddress(e.target.value)}
             placeholder="Enter complete delivery address"
             rows="3"
-            className="w-full p-3 rounded-xl bg-gray-50 border-2 border-fresh-green/10 outline-none focus:border-leaf transition-all placeholder:text-fresh-green/30 font-medium text-sm resize-none"
+            className={`w-full p-3 rounded-xl border-2 outline-none focus:border-leaf transition-all font-medium text-sm resize-none ${darkMode ? 'bg-gray-700 border-gray-600 text-white placeholder:text-gray-400' : 'bg-gray-50 border-fresh-green/10 placeholder:text-fresh-green/30'}`}
           />
         </motion.div>
 
@@ -80,20 +82,20 @@ const Checkout = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-white rounded-2xl p-4 shadow-sm border border-fresh-green/10"
+          className={`rounded-2xl p-4 shadow-sm border ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-fresh-green/10'}`}
         >
           <div className="flex items-center gap-2 mb-3">
             <User size={20} className="text-leaf" />
-            <h3 className="font-black text-fresh-green">Contact Details</h3>
+            <h3 className={`font-black ${darkMode ? 'text-white' : 'text-fresh-green'}`}>Contact Details</h3>
           </div>
           <div className="space-y-2 text-sm">
-            <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
-              <User size={16} className="text-fresh-green/60" />
-              <span className="font-medium text-fresh-green">{userData.name || 'Guest User'}</span>
+            <div className={`flex items-center gap-3 p-3 rounded-xl ${darkMode ? 'bg-gray-700' : 'bg-gray-50'}`}>
+              <User size={16} className={`${darkMode ? 'text-gray-400' : 'text-fresh-green/60'}`} />
+              <span className={`font-medium ${darkMode ? 'text-white' : 'text-fresh-green'}`}>{userData.name || 'Guest User'}</span>
             </div>
-            <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
-              <Phone size={16} className="text-fresh-green/60" />
-              <span className="font-medium text-fresh-green">{userData.phone || 'Not provided'}</span>
+            <div className={`flex items-center gap-3 p-3 rounded-xl ${darkMode ? 'bg-gray-700' : 'bg-gray-50'}`}>
+              <Phone size={16} className={`${darkMode ? 'text-gray-400' : 'text-fresh-green/60'}`} />
+              <span className={`font-medium ${darkMode ? 'text-white' : 'text-fresh-green'}`}>{userData.phone || 'Not provided'}</span>
             </div>
           </div>
         </motion.div>
@@ -103,11 +105,11 @@ const Checkout = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-white rounded-2xl p-4 shadow-sm border border-fresh-green/10"
+          className={`rounded-2xl p-4 shadow-sm border ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-fresh-green/10'}`}
         >
           <div className="flex items-center gap-2 mb-3">
             <Wallet size={20} className="text-leaf" />
-            <h3 className="font-black text-fresh-green">Payment Method</h3>
+            <h3 className={`font-black ${darkMode ? 'text-white' : 'text-fresh-green'}`}>Payment Method</h3>
           </div>
           <div className="space-y-2">
             {/* Cash on Delivery */}
@@ -116,7 +118,7 @@ const Checkout = () => {
               className={`w-full flex items-center justify-between p-4 rounded-xl border-2 transition-all ${
                 paymentMethod === 'cod'
                   ? 'border-leaf bg-leaf/5'
-                  : 'border-fresh-green/10 hover:border-leaf/30'
+                  : darkMode ? 'border-gray-600 hover:border-leaf/30 bg-gray-700/50' : 'border-fresh-green/10 hover:border-leaf/30'
               }`}
             >
               <div className="flex items-center gap-3">
@@ -128,11 +130,11 @@ const Checkout = () => {
                   )}
                 </div>
                 <div className="text-left">
-                  <p className="font-bold text-sm text-fresh-green">Cash on Delivery</p>
-                  <p className="text-xs text-fresh-green/60">Pay when you receive</p>
+                  <p className={`font-bold text-sm ${darkMode ? 'text-white' : 'text-fresh-green'}`}>Cash on Delivery</p>
+                  <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-fresh-green/60'}`}>Pay when you receive</p>
                 </div>
               </div>
-              <Wallet size={20} className="text-fresh-green/40" />
+              <Wallet size={20} className={`${darkMode ? 'text-gray-400' : 'text-fresh-green/40'}`} />
             </button>
 
             {/* Online Payment */}
@@ -141,7 +143,7 @@ const Checkout = () => {
               className={`w-full flex items-center justify-between p-4 rounded-xl border-2 transition-all ${
                 paymentMethod === 'online'
                   ? 'border-leaf bg-leaf/5'
-                  : 'border-fresh-green/10 hover:border-leaf/30'
+                  : darkMode ? 'border-gray-600 hover:border-leaf/30 bg-gray-700/50' : 'border-fresh-green/10 hover:border-leaf/30'
               }`}
             >
               <div className="flex items-center gap-3">
@@ -153,11 +155,11 @@ const Checkout = () => {
                   )}
                 </div>
                 <div className="text-left">
-                  <p className="font-bold text-sm text-fresh-green">Online Payment</p>
-                  <p className="text-xs text-fresh-green/60">UPI, Cards, Wallets</p>
+                  <p className={`font-bold text-sm ${darkMode ? 'text-white' : 'text-fresh-green'}`}>Online Payment</p>
+                  <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-fresh-green/60'}`}>UPI, Cards, Wallets</p>
                 </div>
               </div>
-              <CreditCard size={20} className="text-fresh-green/40" />
+              <CreditCard size={20} className={`${darkMode ? 'text-gray-400' : 'text-fresh-green/40'}`} />
             </button>
           </div>
         </motion.div>
@@ -167,17 +169,17 @@ const Checkout = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-white rounded-2xl p-4 shadow-sm border border-fresh-green/10"
+          className={`rounded-2xl p-4 shadow-sm border ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-fresh-green/10'}`}
         >
-          <h3 className="font-black text-fresh-green mb-3">Order Summary</h3>
+          <h3 className={`font-black mb-3 ${darkMode ? 'text-white' : 'text-fresh-green'}`}>Order Summary</h3>
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
-              <span className="text-fresh-green/60">Items ({getTotalItems()})</span>
-              <span className="font-bold text-fresh-green">₹{getSubtotal()}</span>
+              <span className={`${darkMode ? 'text-gray-400' : 'text-fresh-green/60'}`}>Items ({getTotalItems()})</span>
+              <span className={`font-bold ${darkMode ? 'text-white' : 'text-fresh-green'}`}>₹{getSubtotal()}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-fresh-green/60">Delivery fee</span>
-              <span className="font-bold text-fresh-green">
+              <span className={`${darkMode ? 'text-gray-400' : 'text-fresh-green/60'}`}>Delivery fee</span>
+              <span className={`font-bold ${darkMode ? 'text-white' : 'text-fresh-green'}`}>
                 {getDeliveryFee() === 0 ? (
                   <span className="text-leaf">FREE</span>
                 ) : (
@@ -191,10 +193,10 @@ const Checkout = () => {
                 <span className="font-bold">-₹{getTotalSavings()}</span>
               </div>
             )}
-            <div className="border-t border-fresh-green/10 pt-2 mt-2">
+            <div className={`border-t pt-2 mt-2 ${darkMode ? 'border-gray-600' : 'border-fresh-green/10'}`}>
               <div className="flex justify-between">
-                <span className="font-black text-fresh-green">Total Amount</span>
-                <span className="font-black text-lg text-fresh-green">₹{getTotal()}</span>
+                <span className={`font-black ${darkMode ? 'text-white' : 'text-fresh-green'}`}>Total Amount</span>
+                <span className={`font-black text-lg ${darkMode ? 'text-white' : 'text-fresh-green'}`}>₹{getTotal()}</span>
               </div>
             </div>
           </div>
@@ -205,16 +207,16 @@ const Checkout = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="bg-leaf/10 rounded-2xl p-4 border border-leaf/20"
+          className={`rounded-2xl p-4 border ${darkMode ? 'bg-leaf/20 border-leaf/30' : 'bg-leaf/10 border-leaf/20'}`}
         >
-          <p className="text-sm font-bold text-fresh-green text-center">
+          <p className={`text-sm font-bold text-center ${darkMode ? 'text-white' : 'text-fresh-green'}`}>
             🚀 Delivery in 8-10 minutes
           </p>
         </motion.div>
       </div>
 
       {/* Place Order Button */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-lg border-t border-fresh-green/10 p-4">
+      <div className={`fixed bottom-0 left-0 right-0 z-40 backdrop-blur-lg border-t p-4 ${darkMode ? 'bg-gray-800/95 border-gray-700' : 'bg-white/95 border-fresh-green/10'}`}>
         <div className="max-w-[450px] mx-auto">
           <motion.button
             whileTap={{ scale: isProcessing ? 1 : 0.97 }}

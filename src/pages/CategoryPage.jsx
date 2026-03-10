@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Search, SlidersHorizontal } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useDarkMode } from '../context/DarkModeContext';
 import { products, categories } from '../data/products';
 import ProductCard from '../components/ProductCard';
 import CartStrip from '../components/CartStrip';
@@ -10,6 +11,7 @@ import BottomNav from '../components/BottomNav';
 const CategoryPage = () => {
   const { categoryName } = useParams();
   const navigate = useNavigate();
+  const { darkMode } = useDarkMode();
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('default');
 
@@ -40,23 +42,33 @@ const CategoryPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f0fdf4] via-white to-[#ecfccb] pb-20">
+    <div className={`min-h-screen pb-20 transition-colors ${
+      darkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-[#f0fdf4] via-white to-[#ecfccb]'
+    }`}>
       {/* Header */}
-      <div className="bg-white/90 backdrop-blur-xl border-b border-fresh-green/10 sticky top-0 z-10">
+      <div className={`backdrop-blur-xl border-b sticky top-0 z-10 transition-colors ${
+        darkMode ? 'bg-gray-800/90 border-gray-700' : 'bg-white/90 border-fresh-green/10'
+      }`}>
         <div className="p-4">
           {/* Top Bar */}
           <div className="flex items-center gap-3 mb-3">
             <button 
               onClick={() => navigate('/home')} 
-              className="p-2 hover:bg-fresh-green/10 rounded-lg transition-colors"
+              className={`p-2 rounded-lg transition-colors ${
+                darkMode ? 'hover:bg-gray-700' : 'hover:bg-fresh-green/10'
+              }`}
             >
-              <ArrowLeft size={22} className="text-fresh-green" />
+              <ArrowLeft size={22} className={darkMode ? 'text-white' : 'text-fresh-green'} />
             </button>
             <div className="flex items-center gap-2">
               <span className="text-2xl">{category?.icon}</span>
               <div>
-                <h1 className="text-xl font-black text-fresh-green">{categoryName}</h1>
-                <p className="text-xs text-fresh-green/60 font-medium">
+                <h1 className={`text-xl font-black ${
+                  darkMode ? 'text-white' : 'text-fresh-green'
+                }`}>{categoryName}</h1>
+                <p className={`text-xs font-medium ${
+                  darkMode ? 'text-gray-400' : 'text-fresh-green/60'
+                }`}>
                   {filteredProducts.length} products
                 </p>
               </div>
@@ -65,13 +77,19 @@ const CategoryPage = () => {
 
           {/* Search Bar */}
           <div className="relative mb-3">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-fresh-green/40" size={18} />
+            <Search className={`absolute left-4 top-1/2 -translate-y-1/2 ${
+              darkMode ? 'text-gray-400' : 'text-fresh-green/40'
+            }`} size={18} />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={`Search in ${categoryName}...`}
-              className="w-full pl-11 pr-4 py-2.5 rounded-xl bg-white border-2 border-fresh-green/10 outline-none focus:border-leaf transition-all placeholder:text-fresh-green/30 font-medium text-sm"
+              className={`w-full pl-11 pr-4 py-2.5 rounded-xl border-2 outline-none transition-all font-medium text-sm ${
+                darkMode 
+                  ? 'bg-gray-800 border-gray-700 text-white placeholder:text-gray-400 focus:border-green-500'
+                  : 'bg-white border-fresh-green/10 text-black placeholder:text-fresh-green/30 focus:border-leaf'
+              }`}
             />
           </div>
 

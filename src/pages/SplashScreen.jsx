@@ -2,16 +2,18 @@ import { motion } from 'framer-motion';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Leaf, Sparkles, Apple, Carrot } from 'lucide-react';
+import { useDarkMode } from '../context/DarkModeContext';
 
 const SplashScreen = () => {
   const navigate = useNavigate();
+  const { darkMode } = useDarkMode();
 
   useEffect(() => {
     setTimeout(() => navigate('/register'), 3500);
   }, [navigate]);
 
   return (
-    <div className="h-screen bg-gradient-to-br from-[#f0fdf4] via-white to-[#ecfccb] flex flex-col items-center justify-center overflow-hidden relative">
+    <div className={`h-screen flex flex-col items-center justify-center overflow-hidden relative ${darkMode ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900' : 'bg-gradient-to-br from-[#f0fdf4] via-white to-[#ecfccb]'}`}>
       
       {/* Soft Background Blobs */}
       <motion.div
@@ -106,7 +108,7 @@ const SplashScreen = () => {
           />
           
           {/* Logo Circle */}
-          <div className="relative bg-gradient-to-br from-white to-[#f0fdf4] p-8 rounded-full shadow-xl border-4 border-white">
+          <div className={`relative p-8 rounded-full shadow-xl border-4 ${darkMode ? 'bg-gradient-to-br from-gray-800 to-gray-700 border-gray-600' : 'bg-gradient-to-br from-white to-[#f0fdf4] border-white'}`}>
             <motion.div
               animate={{ 
                 rotate: [0, 360]
@@ -138,7 +140,7 @@ const SplashScreen = () => {
                 transition={{ delay: 0.7 + i * 0.08, duration: 0.5 }}
                 className={`text-6xl font-black tracking-tight ${
                   i < 4 ? 'text-fresh-green' : 'text-leaf'
-                }`}
+                } ${darkMode && i < 4 ? 'text-green-400' : ''} ${darkMode && i >= 4 ? 'text-green-300' : ''}`}
               >
                 {letter}
               </motion.span>
@@ -152,7 +154,7 @@ const SplashScreen = () => {
             transition={{ delay: 1.4, duration: 0.6 }}
             className="mt-4 flex flex-col items-center gap-2"
           >
-            <p className="text-sm font-bold text-fresh-green/80 tracking-wide">
+            <p className={`text-sm font-bold tracking-wide ${darkMode ? 'text-green-400' : 'text-fresh-green/80'}`}>
               Real Freshness
             </p>
             
@@ -163,7 +165,7 @@ const SplashScreen = () => {
               className="h-0.5 bg-leaf rounded-full"
             />
             
-            <p className="text-xs font-semibold text-earth/70 tracking-[0.2em] uppercase mt-1">
+            <p className={`text-xs font-semibold tracking-[0.2em] uppercase mt-1 ${darkMode ? 'text-gray-400' : 'text-earth/70'}`}>
               Chemistry of Freshness
             </p>
           </motion.div>

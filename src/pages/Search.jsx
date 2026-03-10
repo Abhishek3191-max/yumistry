@@ -1,18 +1,67 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Search as SearchIcon, X, TrendingUp, Clock } from 'lucide-react';
+import { ArrowLeft, Search as SearchIcon, X, TrendingUp, Clock, Mic, MicOff } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useDarkMode } from '../context/DarkModeContext';
 import { products, categories } from '../data/products';
 import ProductCard from '../components/ProductCard';
 import CartStrip from '../components/CartStrip';
+import Header from '../components/Header';
 import BottomNav from '../components/BottomNav';
 
 const Search = () => {
   const navigate = useNavigate();
+  const { darkMode } = useDarkMode();
   const [searchQuery, setSearchQuery] = useState('');
   const [searchHistory, setSearchHistory] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const [recognition, setRecognition] = useState(null);
+
+  // Initialize speech recognition
+  useEffect(() => {
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const recognitionInstance = new SpeechRecognition();
+      
+      recognitionInstance.continuous = false;
+      recognitionInstance.interimResults = false;
+      recognitionInstance.lang = 'en-IN'; // English (India) for Hinglish
+      
+      recognitionInstance.onresult = (event) => {
+        const transcript = event.results[0][0].transcript.replace(/[.!?]/g, '').trim();
+        handleSearch(transcript);
+        setIsListening(false);
+      };
+      
+      recognitionInstance.onerror = () => {
+        setIsListening(false);
+      };
+      
+      recognitionInstance.onend = () => {
+        setIsListening(false);
+      };
+      
+      setRecognition(recognitionInstance);
+    }
+  }, []);
+
+  const startVoiceSearch = () => {
+    if (recognition) {
+      setIsListening(true);
+      recognition.start();
+    } else {
+      alert('Voice search not supported in this browser');
+    }
+  };
+
+  const stopVoiceSearch = () => {
+    if (recognition) {
+      recognition.stop();
+      setIsListening(false);
+    }
+  };
 
   // Load search history from localStorage
   useEffect(() => {
@@ -26,10 +75,11 @@ const Search = () => {
   useEffect(() => {
     if (searchQuery.trim()) {
       setIsSearching(true);
-      const query = searchQuery.toLowerCase();
+      const query = searchQuery.toLowerCase().trim();
       
-      // Hindi to English mapping
+      // Comprehensive Hindi to English mapping
       const synonyms = {
+        // Vegetables
         'aloo': 'potato',
         'alloo': 'potato',
         'aalu': 'potato',
@@ -38,34 +88,83 @@ const Search = () => {
         'tamatar': 'tomato',
         'pyaz': 'onion',
         'pyaaz': 'onion',
+        'gajar': 'carrot',
+        'gobhi': 'cauliflower',
+        'phool gobhi': 'cauliflower',
+        'shimla mirch': 'capsicum',
+        'sabzi': 'vegetables',
+        'sabziya': 'vegetables',
+        'sabziyaan': 'vegetables',
+        
+        // Fruits
         'kela': 'banana',
         'seb': 'apple',
         'santra': 'orange',
         'aam': 'mango',
         'angoor': 'grapes',
         'tarbooz': 'watermelon',
-        'gajar': 'carrot',
-        'gobhi': 'cauliflower',
-        'phool gobhi': 'cauliflower',
-        'shimla mirch': 'capsicum',
+        'phal': 'fruits',
+        'fruit': 'fruits',
+        'fruits': 'fruits',
+        
+        // Dairy
         'doodh': 'milk',
         'dudh': 'milk',
         'makhan': 'butter',
         'dahi': 'curd',
         'paneer': 'paneer',
+        'cheese': 'cheese',
+        
+        // Others
         'bread': 'bread',
-        'roti': 'bread'
+        'roti': 'bread',
+        'vegetable': 'vegetables',
+        'vegetables': 'vegetables',
+        'dairy': 'dairy',
+        'munchies': 'munchies',
+        'snacks': 'munchies',
+        'beverages': 'beverages',
+        'drinks': 'beverages',
+        'bakery': 'bakery'
       };
       
       // Get search term (check if it's a synonym)
       const searchTerm = synonyms[query] || query;
       
-      const results = products.filter(product =>
-        product.name.toLowerCase().includes(searchTerm) ||
-        product.name.toLowerCase().includes(query) ||
-        product.category.toLowerCase().includes(searchTerm) ||
-        product.category.toLowerCase().includes(query)
-      );
+      const results = products.filter(product => {
+        const productName = product.name.toLowerCase();
+        const productCategory = product.category.toLowerCase();
+        
+        // Check all possible search terms (original + synonym)
+        const searchTerms = [query, searchTerm].filter(term => term && term.length > 0);
+        
+        // Direct name/category matches
+        for (const term of searchTerms) {
+          if (productName.includes(term) || productCategory.includes(term)) {
+            return true;
+          }
+        }
+        
+        // Check if any Hindi word maps to English product name
+        for (const [hindi, english] of Object.entries(synonyms)) {
+          if (query.includes(hindi) && (productName.includes(english) || productCategory.includes(english))) {
+            return true;
+          }
+        }
+        
+        // Partial word matches (for longer words)
+        for (const term of searchTerms) {
+          const words = term.split(' ');
+          if (words.some(word => word.length > 2 && (productName.includes(word) || productCategory.includes(word)))) {
+            return true;
+          }
+        }
+        
+        return false;
+      });
+      
+      console.log('Search query:', query);
+      console.log('Search results:', results);
       setFilteredProducts(results);
     } else {
       setFilteredProducts([]);
@@ -97,42 +196,50 @@ const Search = () => {
   const popularSearches = ['Tomato', 'Milk', 'Bread', 'Banana', 'Aalu', 'Pyaz'];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f0fdf4] via-white to-[#ecfccb] pb-20">
-      {/* Header with Search */}
-      <div className="bg-white/90 backdrop-blur-xl border-b border-fresh-green/10 sticky top-0 z-10">
-        <div className="p-4">
-          {/* Search Bar */}
-          <div className="flex items-center gap-3">
+    <div className={`min-h-screen pb-20 transition-colors ${
+      darkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-[#f0fdf4] via-white to-[#ecfccb]'
+    }`}>
+      <Header />
+      
+      <div className="p-4">
+        {/* Search Bar */}
+        <div className="relative mb-5">
+          <SearchIcon className={`absolute left-4 top-1/2 -translate-y-1/2 ${
+            darkMode ? 'text-gray-400' : 'text-fresh-green/40'
+          }`} size={20} />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => handleSearch(e.target.value)}
+            placeholder="Search for products..."
+            autoFocus
+            className={`w-full pl-12 pr-20 py-3.5 rounded-xl border-2 outline-none transition-all font-medium text-sm ${
+              darkMode 
+                ? 'bg-gray-800 border-gray-700 text-white placeholder:text-gray-400 focus:border-green-500'
+                : 'bg-white border-fresh-green/10 text-black placeholder:text-fresh-green/30 focus:border-leaf'
+            }`}
+          />
+          <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
             <button
-              onClick={() => navigate(-1)}
-              className="p-2 hover:bg-fresh-green/10 rounded-lg transition-colors flex-shrink-0"
+              onClick={isListening ? stopVoiceSearch : startVoiceSearch}
+              className={`p-2 rounded-full transition-all ${
+                isListening 
+                  ? 'bg-red-500 text-white animate-pulse' 
+                  : 'hover:bg-fresh-green/10 text-fresh-green/60'
+              }`}
             >
-              <ArrowLeft size={22} className="text-fresh-green" />
+              {isListening ? <MicOff size={18} /> : <Mic size={18} />}
             </button>
-            <div className="relative flex-1">
-              <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-fresh-green/40" size={20} />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => handleSearch(e.target.value)}
-                placeholder="Search for products..."
-                autoFocus
-                className="w-full pl-12 pr-12 py-3.5 rounded-xl bg-white border-2 border-fresh-green/10 outline-none focus:border-leaf transition-all placeholder:text-fresh-green/30 font-medium text-sm"
-              />
-              {searchQuery && (
-                <button
-                  onClick={clearSearch}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 p-1 hover:bg-fresh-green/10 rounded-full transition-colors"
-                >
-                  <X size={18} className="text-fresh-green/60" />
-                </button>
-              )}
-            </div>
+            {searchQuery && (
+              <button
+                onClick={clearSearch}
+                className="p-2 hover:bg-fresh-green/10 rounded-full transition-colors"
+              >
+                <X size={18} className="text-fresh-green/60" />
+              </button>
+            )}
           </div>
         </div>
-      </div>
-
-      <div className="p-4">
         {/* Search Results */}
         {isSearching && (
           <AnimatePresence>

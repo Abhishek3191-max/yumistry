@@ -3,12 +3,14 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Plus, Minus, Share2, Heart, Clock, Leaf } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useCart } from '../context/CartContext';
+import { useDarkMode } from '../context/DarkModeContext';
 import { products } from '../data/products';
 
 const ProductDetails = () => {
   const { productId } = useParams();
   const navigate = useNavigate();
   const { addToCart, removeFromCart, getItemQuantity } = useCart();
+  const { darkMode } = useDarkMode();
   const [liked, setLiked] = useState(false);
 
   const product = products.find(p => p.id === parseInt(productId));
@@ -45,30 +47,40 @@ const ProductDetails = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f0fdf4] via-white to-[#ecfccb] pb-24">
+    <div className={`min-h-screen pb-24 transition-colors ${
+      darkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-[#f0fdf4] via-white to-[#ecfccb]'
+    }`}>
       {/* Header */}
-      <div className="bg-white/90 backdrop-blur-xl border-b border-fresh-green/10 sticky top-0 z-10">
+      <div className={`backdrop-blur-xl border-b sticky top-0 z-10 transition-colors ${
+        darkMode ? 'bg-gray-800/90 border-gray-700' : 'bg-white/90 border-fresh-green/10'
+      }`}>
         <div className="flex items-center justify-between p-4">
           <button
             onClick={() => navigate(-1)}
-            className="p-2 hover:bg-fresh-green/10 rounded-lg transition-colors"
+            className={`p-2 rounded-lg transition-colors ${
+              darkMode ? 'hover:bg-gray-700' : 'hover:bg-fresh-green/10'
+            }`}
           >
-            <ArrowLeft size={22} className="text-fresh-green" />
+            <ArrowLeft size={22} className={darkMode ? 'text-white' : 'text-fresh-green'} />
           </button>
           <div className="flex items-center gap-2">
             <button
               onClick={handleShare}
-              className="p-2 hover:bg-fresh-green/10 rounded-lg transition-colors"
+              className={`p-2 rounded-lg transition-colors ${
+                darkMode ? 'hover:bg-gray-700' : 'hover:bg-fresh-green/10'
+              }`}
             >
-              <Share2 size={20} className="text-fresh-green" />
+              <Share2 size={20} className={darkMode ? 'text-white' : 'text-fresh-green'} />
             </button>
             <button
               onClick={() => setLiked(!liked)}
-              className="p-2 hover:bg-fresh-green/10 rounded-lg transition-colors"
+              className={`p-2 rounded-lg transition-colors ${
+                darkMode ? 'hover:bg-gray-700' : 'hover:bg-fresh-green/10'
+              }`}
             >
               <Heart
                 size={20}
-                className={liked ? 'text-red-500 fill-red-500' : 'text-fresh-green'}
+                className={liked ? 'text-red-500 fill-red-500' : (darkMode ? 'text-white' : 'text-fresh-green')}
               />
             </button>
           </div>
@@ -76,7 +88,9 @@ const ProductDetails = () => {
       </div>
 
       {/* Product Image */}
-      <div className="bg-white p-8 mb-4">
+      <div className={`p-8 mb-4 ${
+        darkMode ? 'bg-gray-800' : 'bg-white'
+      }`}>
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Search, ShoppingCart, User, Leaf, Star, Zap, MapPin, ChevronDown } from 'lucide-react';
+import { Search, ShoppingCart, User, Leaf, Star, Zap, MapPin, ChevronDown, Mic, MicOff } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { useDarkMode } from '../context/DarkModeContext';
 import { products, categories } from '../data/products';
 import ProductCard from '../components/ProductCard';
 import CartStrip from '../components/CartStrip';
@@ -12,12 +13,57 @@ import WhatsAppCTA from '../components/WhatsAppCTA';
 const Home = () => {
   const navigate = useNavigate();
   const { getTotalItems } = useCart();
+  const { darkMode } = useDarkMode();
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [showLocationModal, setShowLocationModal] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState('Detecting location...');
   const [customAddress, setCustomAddress] = useState('');
   const [isDetecting, setIsDetecting] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const [recognition, setRecognition] = useState(null);
+
+  // Initialize speech recognition
+  useEffect(() => {
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const recognitionInstance = new SpeechRecognition();
+      
+      recognitionInstance.continuous = false;
+      recognitionInstance.interimResults = false;
+      recognitionInstance.lang = 'en-IN';
+      
+      recognitionInstance.onresult = (event) => {
+        const transcript = event.results[0][0].transcript.replace(/[.!?]/g, '').trim();
+        setSearchQuery(transcript);
+        setIsListening(false);
+      };
+      
+      recognitionInstance.onerror = () => {
+        setIsListening(false);
+      };
+      
+      recognitionInstance.onend = () => {
+        setIsListening(false);
+      };
+      
+      setRecognition(recognitionInstance);
+    }
+  }, []);
+
+  const startVoiceSearch = () => {
+    if (recognition) {
+      setIsListening(true);
+      recognition.start();
+    }
+  };
+
+  const stopVoiceSearch = () => {
+    if (recognition) {
+      recognition.stop();
+      setIsListening(false);
+    }
+  };
 
   // Auto-detect location on mount
   useEffect(() => {
@@ -59,7 +105,11 @@ const Home = () => {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f0fdf4] via-white to-[#ecfccb] pb-20 relative overflow-hidden">
+    <div className={`min-h-screen pb-20 relative overflow-hidden transition-colors ${
+      darkMode 
+        ? 'bg-gray-900' 
+        : 'bg-gradient-to-br from-[#f0fdf4] via-white to-[#ecfccb]'
+    }`}>
       
       {/* Background Blobs */}
       <motion.div
@@ -74,14 +124,21 @@ const Home = () => {
       />
 
       {/* Header */}
-      <div className="relative z-10 bg-white/90 backdrop-blur-xl border-b border-fresh-green/10 sticky top-0">
+      <div className={`backdrop-blur-xl border-b sticky top-0 transition-colors ${
+        darkMode 
+          ? 'bg-gray-800/90 border-gray-700' 
+          : 'bg-white/90 border-fresh-green/10'
+      }`}>
         <div className="p-4">
           {/* Top Bar */}
           <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-2">
+            <button 
+              onClick={() => navigate('/home')}
+              className="flex items-center gap-2 hover:scale-105 transition-transform"
+            >
               <Leaf className="text-leaf" size={26} fill="#84cc16" />
               <h1 className="text-xl font-black tracking-tight text-fresh-green">Yumistry</h1>
-            </div>
+            </button>
             <div className="flex items-center gap-3">
               <button 
                 onClick={() => navigate('/cart')}
@@ -119,14 +176,30 @@ const Home = () => {
       <div className="relative z-10 px-4 py-4">
         {/* Search Bar */}
         <div className="relative mb-5">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-fresh-green/40" size={20} />
+          <Search className={`absolute left-4 top-1/2 -translate-y-1/2 ${
+            darkMode ? 'text-gray-400' : 'text-fresh-green/40'
+          }`} size={20} />
           <input 
             type="text" 
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search for vegetables, fruits, dairy..." 
-            className="w-full pl-12 pr-4 py-3.5 rounded-xl bg-white border-2 border-fresh-green/10 outline-none focus:border-leaf transition-all placeholder:text-fresh-green/30 font-medium text-sm shadow-sm"
+            className={`w-full pl-12 pr-16 py-3.5 rounded-xl border-2 outline-none transition-all font-medium text-sm shadow-sm ${
+              darkMode 
+                ? 'bg-gray-800 border-gray-700 text-white placeholder:text-gray-400 focus:border-green-500'
+                : 'bg-white border-fresh-green/10 text-black placeholder:text-fresh-green/30 focus:border-leaf'
+            }`}
           />
+          <button
+            onClick={isListening ? stopVoiceSearch : startVoiceSearch}
+            className={`absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full transition-all ${
+              isListening 
+                ? 'bg-red-500 text-white animate-pulse' 
+                : (darkMode ? 'hover:bg-gray-700 text-gray-400' : 'hover:bg-fresh-green/10 text-fresh-green/60')
+            }`}
+          >
+            {isListening ? <MicOff size={18} /> : <Mic size={18} />}
+          </button>
         </div>
 
         {/* Offer Banner */}

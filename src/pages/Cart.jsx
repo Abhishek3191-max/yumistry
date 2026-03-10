@@ -1,4 +1,5 @@
 import { useCart } from '../context/CartContext';
+import { useDarkMode } from '../context/DarkModeContext';
 import { ArrowLeft, Plus, Minus, Trash2, ShoppingBag, Leaf } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -16,28 +17,43 @@ const Cart = () => {
     getDeliveryFee, 
     getTotal 
   } = useCart();
+  const { darkMode } = useDarkMode();
   const navigate = useNavigate();
 
   if (cart.length === 0) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#f0fdf4] via-white to-[#ecfccb] pb-20">
+      <div className={`min-h-screen pb-20 transition-colors ${
+        darkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-[#f0fdf4] via-white to-[#ecfccb]'
+      }`}>
         {/* Header */}
-        <div className="bg-white/90 backdrop-blur-xl border-b border-fresh-green/10 sticky top-0 z-10">
+        <div className={`backdrop-blur-xl border-b sticky top-0 z-10 transition-colors ${
+          darkMode ? 'bg-gray-800/90 border-gray-700' : 'bg-white/90 border-fresh-green/10'
+        }`}>
           <div className="flex items-center gap-3 p-4">
-            <button onClick={() => navigate('/home')} className="p-2 hover:bg-fresh-green/10 rounded-lg transition-colors">
-              <ArrowLeft size={22} className="text-fresh-green" />
+            <button onClick={() => navigate('/home')} className={`p-2 rounded-lg transition-colors ${
+              darkMode ? 'hover:bg-gray-700' : 'hover:bg-fresh-green/10'
+            }`}>
+              <ArrowLeft size={22} className={darkMode ? 'text-white' : 'text-fresh-green'} />
             </button>
-            <h1 className="text-xl font-black text-fresh-green">My Cart</h1>
+            <h1 className={`text-xl font-black ${
+              darkMode ? 'text-white' : 'text-fresh-green'
+            }`}>My Cart</h1>
           </div>
         </div>
 
         {/* Empty Cart */}
         <div className="flex flex-col items-center justify-center px-4 py-20">
-          <div className="bg-fresh-green/10 rounded-full p-8 mb-6">
-            <ShoppingBag size={64} className="text-fresh-green/40" />
+          <div className={`rounded-full p-8 mb-6 ${
+            darkMode ? 'bg-gray-800' : 'bg-fresh-green/10'
+          }`}>
+            <ShoppingBag size={64} className={darkMode ? 'text-gray-400' : 'text-fresh-green/40'} />
           </div>
-          <h2 className="text-2xl font-black text-fresh-green mb-2">Your cart is empty</h2>
-          <p className="text-fresh-green/60 text-center mb-6">Add items to get started</p>
+          <h2 className={`text-2xl font-black mb-2 ${
+            darkMode ? 'text-white' : 'text-fresh-green'
+          }`}>Your cart is empty</h2>
+          <p className={`text-center mb-6 ${
+            darkMode ? 'text-gray-400' : 'text-fresh-green/60'
+          }`}>Add items to get started</p>
           <motion.button
             whileTap={{ scale: 0.95 }}
             onClick={() => navigate('/home')}
@@ -52,20 +68,30 @@ const Cart = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f0fdf4] via-white to-[#ecfccb] pb-32">
+    <div className={`min-h-screen pb-32 transition-colors ${
+      darkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-[#f0fdf4] via-white to-[#ecfccb]'
+    }`}>
       {/* Header */}
-      <div className="bg-white/90 backdrop-blur-xl border-b border-fresh-green/10 sticky top-0 z-10">
+      <div className={`backdrop-blur-xl border-b sticky top-0 z-10 transition-colors ${
+        darkMode ? 'bg-gray-800/90 border-gray-700' : 'bg-white/90 border-fresh-green/10'
+      }`}>
         <div className="flex items-center justify-between p-4">
           <div className="flex items-center gap-3">
-            <button onClick={() => navigate('/home')} className="p-2 hover:bg-fresh-green/10 rounded-lg transition-colors">
-              <ArrowLeft size={22} className="text-fresh-green" />
+            <button onClick={() => navigate('/home')} className={`p-2 rounded-lg transition-colors ${
+              darkMode ? 'hover:bg-gray-700' : 'hover:bg-fresh-green/10'
+            }`}>
+              <ArrowLeft size={22} className={darkMode ? 'text-white' : 'text-fresh-green'} />
             </button>
             <div>
-              <h1 className="text-xl font-black text-fresh-green">My Cart</h1>
-              <p className="text-xs text-fresh-green/60 font-medium">{getTotalItems()} items</p>
+              <h1 className={`text-xl font-black ${
+                darkMode ? 'text-white' : 'text-fresh-green'
+              }`}>My Cart</h1>
+              <p className={`text-xs font-medium ${
+                darkMode ? 'text-gray-400' : 'text-fresh-green/60'
+              }`}>{getTotalItems()} items</p>
             </div>
           </div>
-          <Leaf className="text-leaf" size={24} fill="#84cc16" />
+          <Leaf className={darkMode ? 'text-green-400' : 'text-leaf'} size={24} fill={darkMode ? '#4ade80' : '#84cc16'} />
         </div>
       </div>
 
