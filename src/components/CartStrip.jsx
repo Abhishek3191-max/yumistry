@@ -22,7 +22,7 @@ const CartStrip = () => {
           <motion.div
             whileTap={{ scale: 0.97 }}
             onClick={() => navigate('/cart')}
-            className="bg-gradient-to-r from-[#f99e61] to-[#f52d05] rounded-xl shadow-2xl p-4 cursor-pointer flex items-center justify-between"
+            className="bg-gradient-to-r from-[#7f1d1d] to-[#f52d05] rounded-xl shadow-2xl p-4 cursor-pointer flex items-center justify-between"
           >
             {/* Left Section - Items & Total */}
             <div className="flex items-center gap-3">

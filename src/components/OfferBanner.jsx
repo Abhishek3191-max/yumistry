@@ -6,7 +6,7 @@ const OfferBanner = () => {
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-gradient-to-r from-[#f99e61] to-[#f52d05] rounded-2xl p-5 text-white mb-6 shadow-lg relative overflow-hidden"
+      className="bg-gradient-to-r from-[#7f1d1d] to-[#f52d05] rounded-2xl p-5 text-white mb-6 shadow-lg relative overflow-hidden"
     >
       <div className="relative z-10">
         <div className="flex items-center gap-2 mb-1">

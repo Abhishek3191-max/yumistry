@@ -1,13 +1,13 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #f99e61;      /* Pink Red */
+  --color-primary: #7f1d1d;      /* Pink Red */
   --color-secondary: #f52d05;    /* Orange Red */
   --color-accent: #ff6b9d;       /* Light Pink */
-  --color-fresh-green: #f99e61;  /* Pink Red */
+  --color-fresh-green: #7f1d1d;  /* Pink Red */
   --color-leaf: #f52d05;         /* Orange Red */
   --color-organic: #fff5f7;      /* Light Pink Background */
-  --color-earth: #f99e61;        /* Pink Red */
+  --color-earth: #7f1d1d;        /* Pink Red */
   --color-sun: #ff6b9d;          /* Light Pink */
   --color-background: #fff5f7;   /* Background */
   --color-text: #1a1a1a;         /* Text */
@@ -17,7 +17,7 @@
   body {
     @apply antialiased;
     font-family: 'Quicksand', sans-serif;
-    background: linear-gradient(135deg, #f99e61, #f52d05);
+    background: linear-gradient(135deg, #7f1d1d, #f52d05);
     color: #1a1a1a;
   }
 }

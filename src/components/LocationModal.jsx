@@ -22,7 +22,7 @@ const LocationModal = ({
         className="bg-white w-full rounded-t-3xl p-6 max-h-[80vh] overflow-y-auto"
       >
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-xl font-black text-[#f99e61]">Select Location</h3>
+          <h3 className="text-xl font-black text-[#7f1d1d]">Select Location</h3>
           <button onClick={() => setShowLocationModal(false)} className="p-2 hover:bg-gray-100 rounded-lg">
             ✕
           </button>
@@ -34,7 +34,7 @@ const LocationModal = ({
             setShowLocationModal(false);
           }}
           disabled={isDetecting}
-          className="w-full mb-4 p-4 bg-gradient-to-r from-[#f99e61] to-[#f52d05] text-white rounded-xl font-bold flex items-center justify-center gap-2 disabled:opacity-50"
+          className="w-full mb-4 p-4 bg-gradient-to-r from-[#7f1d1d] to-[#f52d05] text-white rounded-xl font-bold flex items-center justify-center gap-2 disabled:opacity-50"
         >
           <MapPin size={20} />
           {isDetecting ? 'Detecting...' : 'Use Current Location'}
@@ -46,7 +46,7 @@ const LocationModal = ({
             value={customAddress}
             onChange={(e) => setCustomAddress(e.target.value)}
             placeholder="Enter your address"
-            className="w-full p-4 border-2 border-[#f99e61]/10 rounded-xl outline-none focus:border-[#f52d05] font-medium"
+            className="w-full p-4 border-2 border-[#7f1d1d]/10 rounded-xl outline-none focus:border-[#f52d05] font-medium"
           />
           <button
             onClick={() => {
@@ -57,14 +57,14 @@ const LocationModal = ({
                 setShowLocationModal(false);
               }
             }}
-            className="w-full mt-2 p-3 bg-gradient-to-r from-[#f99e61] to-[#f52d05] text-white rounded-xl font-bold"
+            className="w-full mt-2 p-3 bg-gradient-to-r from-[#7f1d1d] to-[#f52d05] text-white rounded-xl font-bold"
           >
             Save Address
           </button>
         </div>
 
         <div className="space-y-2">
-          <p className="text-sm font-bold text-[#f99e61]/60 mb-2">Saved Addresses</p>
+          <p className="text-sm font-bold text-[#7f1d1d]/60 mb-2">Saved Addresses</p>
           {['Home - New Delhi', 'Office - Gurgaon', 'Other - Noida'].map((loc) => (
             <button
               key={loc}
@@ -76,12 +76,12 @@ const LocationModal = ({
               className={`w-full text-left p-4 rounded-xl border-2 transition-all ${
                 selectedLocation === loc
                   ? 'border-[#f52d05] bg-[#f52d05]/5'
-                  : 'border-[#f99e61]/10 hover:border-[#f52d05]/30'
+                  : 'border-[#7f1d1d]/10 hover:border-[#f52d05]/30'
               }`}
             >
               <div className="flex items-center gap-3">
                 <MapPin size={20} className="text-[#f52d05]" />
-                <span className="font-bold text-[#f99e61]">{loc}</span>
+                <span className="font-bold text-[#7f1d1d]">{loc}</span>
               </div>
             </button>
           ))}

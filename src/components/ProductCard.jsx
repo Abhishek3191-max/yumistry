@@ -21,11 +21,11 @@ const ProductCard = ({ product }) => {
   return (
     <motion.div 
       whileHover={{ y: -4 }}
-      className="bg-white border border-[#f99e61]/10 rounded-2xl p-4 shadow-sm hover:shadow-lg transition-all relative"
+      className="bg-white border border-[#7f1d1d]/10 rounded-2xl p-4 shadow-sm hover:shadow-lg transition-all relative"
     >
       {/* Discount Badge */}
       {discount > 0 && (
-        <div className="absolute top-2 left-2 bg-gradient-to-r from-[#f99e61] to-[#f52d05] text-white text-[10px] font-bold px-2 py-0.5 rounded-md z-10">
+        <div className="absolute top-2 left-2 bg-gradient-to-r from-[#7f1d1d] to-[#f52d05] text-white text-[10px] font-bold px-2 py-0.5 rounded-md z-10">
           {discount}% OFF
         </div>
       )}
@@ -38,7 +38,7 @@ const ProductCard = ({ product }) => {
       >
         <Heart
           size={16}
-          className={isWishlisted ? 'text-red-500 fill-red-500' : 'text-[#f99e61]/60'}
+          className={isWishlisted ? 'text-red-500 fill-red-500' : 'text-[#7f1d1d]/60'}
           strokeWidth={2.5}
         />
       </motion.button>
@@ -61,16 +61,16 @@ const ProductCard = ({ product }) => {
         onClick={() => navigate(`/product/${product.id}`)}
         className="space-y-1 cursor-pointer"
       >
-        <h4 className="font-bold text-sm text-[#f99e61] line-clamp-2 leading-tight">
+        <h4 className="font-bold text-sm text-[#7f1d1d] line-clamp-2 leading-tight">
           {product.name}
         </h4>
-        <p className="text-[11px] text-[#f99e61]/50 font-semibold">
+        <p className="text-[11px] text-[#7f1d1d]/50 font-semibold">
           {product.weight}
         </p>
 
         {/* Price Section */}
         <div className="flex items-center gap-2 pt-1">
-          <span className="font-bold text-base text-[#f99e61]">₹{product.price}</span>
+          <span className="font-bold text-base text-[#7f1d1d]">₹{product.price}</span>
           {discount > 0 && (
             <span className="text-xs text-gray-400 line-through">₹{product.originalPrice}</span>
           )}
@@ -83,16 +83,16 @@ const ProductCard = ({ product }) => {
           <motion.button
             whileTap={{ scale: 0.95 }}
             onClick={() => addToCart(product)}
-            className="w-full bg-white border-2 border-[#f52d05] text-[#f52d05] font-bold text-sm py-2 rounded-lg hover:bg-gradient-to-r hover:from-[#f99e61] hover:to-[#f52d05] hover:text-white transition-all"
+            className="w-full bg-white border-2 border-[#f52d05] text-[#f52d05] font-bold text-sm py-2 rounded-lg hover:bg-gradient-to-r hover:from-[#7f1d1d] hover:to-[#f52d05] hover:text-white transition-all"
           >
             ADD
           </motion.button>
         ) : (
-          <div className="flex items-center justify-between bg-gradient-to-r from-[#f99e61] to-[#f52d05] rounded-lg p-1">
+          <div className="flex items-center justify-between bg-gradient-to-r from-[#7f1d1d] to-[#f52d05] rounded-lg p-1">
             <motion.button
               whileTap={{ scale: 0.9 }}
               onClick={() => removeFromCart(product.id)}
-              className="bg-white text-[#f52d05] rounded-md p-1.5 hover:bg-[#f99e61]/10 transition-colors"
+              className="bg-white text-[#f52d05] rounded-md p-1.5 hover:bg-[#7f1d1d]/10 transition-colors"
             >
               <Minus size={14} strokeWidth={3} />
             </motion.button>
@@ -100,7 +100,7 @@ const ProductCard = ({ product }) => {
             <motion.button
               whileTap={{ scale: 0.9 }}
               onClick={() => addToCart(product)}
-              className="bg-white text-[#f52d05] rounded-md p-1.5 hover:bg-[#f99e61]/10 transition-colors"
+              className="bg-white text-[#f52d05] rounded-md p-1.5 hover:bg-[#7f1d1d]/10 transition-colors"
             >
               <Plus size={14} strokeWidth={3} />
             </motion.button>

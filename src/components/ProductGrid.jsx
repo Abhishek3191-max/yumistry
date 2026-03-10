@@ -6,10 +6,10 @@ const ProductGrid = ({ filteredProducts, selectedCategory }) => {
     <>
       <div className="flex justify-between items-center mb-4">
         <div>
-          <h3 className="text-base font-black text-[#f99e61]">
+          <h3 className="text-base font-black text-[#7f1d1d]">
             {selectedCategory === 'All' ? 'All Products' : selectedCategory}
           </h3>
-          <p className="text-xs font-semibold text-[#f99e61]/60">
+          <p className="text-xs font-semibold text-[#7f1d1d]/60">
             {filteredProducts.length} items
           </p>
         </div>
@@ -30,7 +30,7 @@ const ProductGrid = ({ filteredProducts, selectedCategory }) => {
         </div>
       ) : (
         <div className="text-center py-12">
-          <p className="text-[#f99e61]/60 font-semibold">No products found</p>
+          <p className="text-[#7f1d1d]/60 font-semibold">No products found</p>
         </div>
       )}
     </>
