@@ -12,7 +12,7 @@ const Header = () => {
     <div className={`backdrop-blur-xl border-b sticky top-0 z-10 transition-colors ${
       darkMode 
         ? 'bg-gray-800/90 border-gray-700' 
-        : 'bg-white/90 border-fresh-green/10'
+        : 'bg-white/90 border-[#f99e61]/10'
     }`}>
       <div className="p-4">
         <div className="flex items-center justify-between">
@@ -20,9 +20,9 @@ const Header = () => {
             onClick={() => navigate('/home')}
             className="flex items-center gap-2 hover:scale-105 transition-transform"
           >
-            <Leaf className={darkMode ? 'text-green-400' : 'text-leaf'} size={26} fill={darkMode ? '#4ade80' : '#84cc16'} />
+            <Leaf className={darkMode ? 'text-green-400' : 'text-[#f52d05]'} size={26} fill={darkMode ? '#4ade80' : '#f99e61'} />
             <h1 className={`text-xl font-black tracking-tight ${
-              darkMode ? 'text-white' : 'text-fresh-green'
+              darkMode ? 'text-white' : 'text-[#f99e61]'
             }`}>Yumistry</h1>
           </button>
           <div className="flex items-center gap-3">
@@ -30,9 +30,9 @@ const Header = () => {
               onClick={() => navigate('/cart')}
               className="relative hover:scale-110 transition-transform"
             >
-              <ShoppingCart size={22} className={darkMode ? 'text-white' : 'text-fresh-green'} />
+              <ShoppingCart size={22} className={darkMode ? 'text-white' : 'text-[#f99e61]'} />
               {getTotalItems() > 0 && (
-                <span className="absolute -top-2 -right-2 bg-leaf text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
+                <span className="absolute -top-2 -right-2 bg-gradient-to-r from-[#f99e61] to-[#f52d05] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
                   {getTotalItems()}
                 </span>
               )}
@@ -41,7 +41,7 @@ const Header = () => {
               onClick={() => navigate('/account')}
               className="hover:scale-110 transition-transform"
             >
-              <User size={22} className={darkMode ? 'text-white' : 'text-fresh-green'} />
+              <User size={22} className={darkMode ? 'text-white' : 'text-[#f99e61]'} />
             </button>
           </div>
         </div>

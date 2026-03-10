@@ -1,20 +1,23 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #8B60ED;      /* Zepto Purple */
-  --color-secondary: #6C3FD6;    /* Deep Purple */
-  --color-accent: #A78BFA;       /* Light Purple */
-  --color-fresh-green: #10B981;  /* Emerald */
-  --color-leaf: #8B60ED;         /* Purple */
-  --color-organic: #FFFFFF;      /* White */
-  --color-earth: #5B21B6;        /* Dark Purple */
-  --color-sun: #A78BFA;          /* Light Purple */
+  --color-primary: #f99e61;      /* Pink Red */
+  --color-secondary: #f52d05;    /* Orange Red */
+  --color-accent: #ff6b9d;       /* Light Pink */
+  --color-fresh-green: #f99e61;  /* Pink Red */
+  --color-leaf: #f52d05;         /* Orange Red */
+  --color-organic: #fff5f7;      /* Light Pink Background */
+  --color-earth: #f99e61;        /* Pink Red */
+  --color-sun: #ff6b9d;          /* Light Pink */
+  --color-background: #fff5f7;   /* Background */
+  --color-text: #1a1a1a;         /* Text */
 }
 
 @layer base {
   body {
     @apply antialiased;
     font-family: 'Quicksand', sans-serif;
-    background: #FFFFFF;
+    background: linear-gradient(135deg, #f99e61, #f52d05);
+    color: #1a1a1a;
   }
 }
