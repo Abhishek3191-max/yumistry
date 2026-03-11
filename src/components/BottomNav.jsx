@@ -21,7 +21,7 @@ const BottomNav = () => {
     <nav className={`fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[450px] backdrop-blur-lg border-t flex justify-around py-2 z-50 transition-colors ${
       darkMode 
         ? 'bg-gray-800/95 border-gray-700 shadow-[0_-2px_20px_rgba(0,0,0,0.3)]'
-        : 'bg-white/95 border-fresh-green/10 shadow-[0_-2px_20px_rgba(132,204,22,0.08)]'
+        : 'bg-white/95 border-[#7f1d1d]/10 shadow-[0_-2px_20px_rgba(255,65,108,0.08)]'
     }`}>
       {navItems.map((item) => {
         const isActive = location.pathname === item.path;
@@ -39,7 +39,7 @@ const BottomNav = () => {
               <motion.div
                 layoutId="activeTab"
                 className={`absolute inset-0 rounded-xl ${
-                  darkMode ? 'bg-green-500/20' : 'bg-leaf/10'
+                  darkMode ? 'bg-green-500/20' : 'bg-[#7f1d1d]/10'
                 }`}
                 transition={{ type: 'spring', stiffness: 300, damping: 30 }}
               />
@@ -51,8 +51,8 @@ const BottomNav = () => {
                 size={22} 
                 className={`transition-colors ${
                   isActive 
-                    ? (darkMode ? 'text-green-400' : 'text-leaf')
-                    : (darkMode ? 'text-gray-400' : 'text-fresh-green/40')
+                    ? (darkMode ? 'text-green-400' : 'text-[#f52d05]')
+                    : (darkMode ? 'text-gray-400' : 'text-[#7f1d1d]/40')
                 }`}
                 strokeWidth={isActive ? 2.5 : 2}
               />
@@ -62,8 +62,8 @@ const BottomNav = () => {
             <span 
               className={`text-[10px] font-bold relative z-10 transition-colors ${
                 isActive 
-                  ? (darkMode ? 'text-green-400' : 'text-leaf')
-                  : (darkMode ? 'text-gray-400' : 'text-fresh-green/50')
+                  ? (darkMode ? 'text-green-400' : 'text-[#f52d05]')
+                  : (darkMode ? 'text-gray-400' : 'text-[#7f1d1d]/50')
               }`}
             >
               {item.label}

@@ -60,18 +60,18 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f0fdf4] via-white to-[#ecfccb] flex items-center justify-center p-4 sm:p-6 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-[#fff5f7] via-white to-[#ffe5ec] flex items-center justify-center p-4 sm:p-6 relative overflow-hidden">
       
       {/* Background Blobs */}
       <motion.div
         animate={{ scale: [1, 1.1, 1], opacity: [0.2, 0.3, 0.2] }}
         transition={{ duration: 8, repeat: Infinity }}
-        className="absolute top-10 right-10 w-48 h-48 sm:w-72 sm:h-72 bg-gradient-to-br from-leaf/20 to-[#22c55e]/10 rounded-full blur-3xl"
+        className="absolute top-10 right-10 w-48 h-48 sm:w-72 sm:h-72 bg-gradient-to-br from-[#7f1d1d]/20 to-[#f52d05]/10 rounded-full blur-3xl"
       />
       <motion.div
         animate={{ scale: [1, 1.2, 1], opacity: [0.15, 0.25, 0.15] }}
         transition={{ duration: 10, repeat: Infinity }}
-        className="absolute bottom-10 left-10 w-56 h-56 sm:w-80 sm:h-80 bg-gradient-to-tl from-[#fef08a]/30 to-[#84cc16]/10 rounded-full blur-3xl"
+        className="absolute bottom-10 left-10 w-56 h-56 sm:w-80 sm:h-80 bg-gradient-to-tl from-[#ff6b9d]/30 to-[#7f1d1d]/10 rounded-full blur-3xl"
       />
 
       {/* Form Container */}
@@ -84,18 +84,18 @@ const Register = () => {
         {/* Header */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-2 mb-2">
-            <Leaf className="text-leaf" size={28} strokeWidth={2.5} fill="#84cc16" />
-            <h1 className="text-3xl font-black tracking-tight text-fresh-green">Yumistry</h1>
+            <Leaf className="text-[#f52d05]" size={28} strokeWidth={2.5} fill="#7f1d1d" />
+            <h1 className="text-3xl font-black tracking-tight text-[#7f1d1d]">Yumistry</h1>
           </div>
-          <p className="text-sm text-fresh-green/60 font-medium">Create your account</p>
+          <p className="text-sm text-[#7f1d1d]/60 font-medium">Create your account</p>
         </div>
         
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Name Input */}
           <div>
-            <label className="block text-sm font-semibold text-fresh-green/70 mb-2">Full Name</label>
+            <label className="block text-sm font-semibold text-[#7f1d1d]/70 mb-2">Full Name</label>
             <div className="relative">
-              <User className="absolute left-4 top-1/2 -translate-y-1/2 text-fresh-green/40" size={20} />
+              <User className="absolute left-4 top-1/2 -translate-y-1/2 text-[#7f1d1d]/40" size={20} />
               <input 
                 type="text" 
                 name="name"
@@ -103,8 +103,8 @@ const Register = () => {
                 onChange={handleChange}
                 placeholder="Enter your full name"
                 disabled={isLoading}
-                className={`w-full pl-12 pr-4 py-3.5 rounded-xl bg-white border-2 outline-none transition-all placeholder:text-fresh-green/30 font-medium text-sm disabled:opacity-50 ${
-                  errors.name ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-leaf'
+                className={`w-full pl-12 pr-4 py-3.5 rounded-xl bg-white border-2 outline-none transition-all placeholder:text-[#7f1d1d]/30 font-medium text-sm disabled:opacity-50 ${
+                  errors.name ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-[#f52d05]'
                 }`}
               />
             </div>
@@ -113,9 +113,9 @@ const Register = () => {
 
           {/* Phone Input */}
           <div>
-            <label className="block text-sm font-semibold text-fresh-green/70 mb-2">Phone Number</label>
+            <label className="block text-sm font-semibold text-[#7f1d1d]/70 mb-2">Phone Number</label>
             <div className="relative">
-              <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-fresh-green/40" size={20} />
+              <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-[#7f1d1d]/40" size={20} />
               <input 
                 type="tel" 
                 name="phone"
@@ -124,8 +124,8 @@ const Register = () => {
                 placeholder="Enter 10-digit number"
                 maxLength="10"
                 disabled={isLoading}
-                className={`w-full pl-12 pr-4 py-3.5 rounded-xl bg-white border-2 outline-none transition-all placeholder:text-fresh-green/30 font-medium text-sm disabled:opacity-50 ${
-                  errors.phone ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-leaf'
+                className={`w-full pl-12 pr-4 py-3.5 rounded-xl bg-white border-2 outline-none transition-all placeholder:text-[#7f1d1d]/30 font-medium text-sm disabled:opacity-50 ${
+                  errors.phone ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-[#f52d05]'
                 }`}
               />
             </div>
@@ -134,9 +134,9 @@ const Register = () => {
 
           {/* Password Input */}
           <div>
-            <label className="block text-sm font-semibold text-fresh-green/70 mb-2">Password</label>
+            <label className="block text-sm font-semibold text-[#7f1d1d]/70 mb-2">Password</label>
             <div className="relative">
-              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-fresh-green/40" size={20} />
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-[#7f1d1d]/40" size={20} />
               <input 
                 type={showPassword ? 'text' : 'password'}
                 name="password"
@@ -144,15 +144,15 @@ const Register = () => {
                 onChange={handleChange}
                 placeholder="Create password"
                 disabled={isLoading}
-                className={`w-full pl-12 pr-12 py-3.5 rounded-xl bg-white border-2 outline-none transition-all placeholder:text-fresh-green/30 font-medium text-sm disabled:opacity-50 ${
-                  errors.password ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-leaf'
+                className={`w-full pl-12 pr-12 py-3.5 rounded-xl bg-white border-2 outline-none transition-all placeholder:text-[#7f1d1d]/30 font-medium text-sm disabled:opacity-50 ${
+                  errors.password ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-[#f52d05]'
                 }`}
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 disabled={isLoading}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-fresh-green/40 hover:text-fresh-green disabled:opacity-50"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-[#7f1d1d]/40 hover:text-[#7f1d1d] disabled:opacity-50"
               >
                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
@@ -165,7 +165,7 @@ const Register = () => {
             type="submit"
             disabled={isLoading}
             whileTap={{ scale: isLoading ? 1 : 0.97 }}
-            className="w-full bg-gradient-to-r from-fresh-green to-leaf text-white py-4 rounded-xl font-bold text-base shadow-lg hover:shadow-xl transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="w-full bg-gradient-to-r from-[#7f1d1d] to-[#f52d05] text-white py-4 rounded-xl font-bold text-base shadow-lg hover:shadow-xl transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {isLoading ? (
               <>
@@ -182,12 +182,12 @@ const Register = () => {
           </motion.button>
 
           {/* Login Link */}
-          <p className="text-center text-sm text-fresh-green/60 font-medium mt-6">
+          <p className="text-center text-sm text-[#7f1d1d]/60 font-medium mt-6">
             Already have an account?{' '}
             <button
               type="button"
               onClick={() => navigate('/login')}
-              className="text-leaf font-bold hover:underline"
+              className="text-[#f52d05] font-bold hover:underline"
             >
               Login
             </button>
