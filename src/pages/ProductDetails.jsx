@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { useCart } from '../context/CartContext';
 import { useDarkMode } from '../context/DarkModeContext';
 import { products } from '../data/products';
+import BottomNav from '../components/BottomNav';
 
 const ProductDetails = () => {
   const { productId } = useParams();
@@ -47,7 +48,7 @@ const ProductDetails = () => {
   };
 
   return (
-    <div className={`min-h-screen pb-24 transition-colors ${
+    <div className={`min-h-screen pb-20 transition-colors ${
       darkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-[#f0fdf4] via-white to-[#ecfccb]'
     }`}>
       {/* Header */}
@@ -88,7 +89,7 @@ const ProductDetails = () => {
       </div>
 
       {/* Product Image */}
-      <div className={`p-8 mb-4 ${
+      <div className={`p-8 mb-4 transition-colors ${
         darkMode ? 'bg-gray-800' : 'bg-white'
       }`}>
         <motion.div
@@ -116,14 +117,20 @@ const ProductDetails = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-2xl p-4 shadow-sm border border-fresh-green/10"
+          className={`rounded-2xl p-4 shadow-sm border transition-colors ${
+            darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-fresh-green/10'
+          }`}
         >
           <div className="flex items-start justify-between mb-3">
             <div className="flex-1">
-              <h1 className="text-xl font-black text-fresh-green mb-1">
+              <h1 className={`text-xl font-black mb-1 ${
+                darkMode ? 'text-white' : 'text-fresh-green'
+              }`}>
                 {product.name}
               </h1>
-              <p className="text-sm text-fresh-green/60 font-semibold">
+              <p className={`text-sm font-semibold ${
+                darkMode ? 'text-gray-400' : 'text-fresh-green/60'
+              }`}>
                 {product.weight}
               </p>
             </div>
@@ -135,7 +142,9 @@ const ProductDetails = () => {
 
           {/* Price */}
           <div className="flex items-center gap-3 mb-4">
-            <span className="text-2xl font-black text-fresh-green">₹{product.price}</span>
+            <span className={`text-2xl font-black ${
+              darkMode ? 'text-white' : 'text-fresh-green'
+            }`}>₹{product.price}</span>
             {discount > 0 && (
               <>
                 <span className="text-lg text-gray-400 line-through">₹{product.originalPrice}</span>
@@ -181,25 +190,43 @@ const ProductDetails = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-white rounded-2xl p-4 shadow-sm border border-fresh-green/10"
+          className={`rounded-2xl p-4 shadow-sm border transition-colors ${
+            darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-fresh-green/10'
+          }`}
         >
-          <h3 className="font-black text-fresh-green mb-3">Product Details</h3>
+          <h3 className={`font-black mb-3 ${
+            darkMode ? 'text-white' : 'text-fresh-green'
+          }`}>Product Details</h3>
           <div className="space-y-2 text-sm">
-            <div className="flex justify-between py-2 border-b border-fresh-green/10">
-              <span className="text-fresh-green/60">Category</span>
-              <span className="font-bold text-fresh-green">{product.category}</span>
+            <div className={`flex justify-between py-2 border-b ${
+              darkMode ? 'border-gray-600' : 'border-fresh-green/10'
+            }`}>
+              <span className={darkMode ? 'text-gray-400' : 'text-fresh-green/60'}>Category</span>
+              <span className={`font-bold ${
+                darkMode ? 'text-white' : 'text-fresh-green'
+              }`}>{product.category}</span>
             </div>
-            <div className="flex justify-between py-2 border-b border-fresh-green/10">
-              <span className="text-fresh-green/60">Weight/Quantity</span>
-              <span className="font-bold text-fresh-green">{product.weight}</span>
+            <div className={`flex justify-between py-2 border-b ${
+              darkMode ? 'border-gray-600' : 'border-fresh-green/10'
+            }`}>
+              <span className={darkMode ? 'text-gray-400' : 'text-fresh-green/60'}>Weight/Quantity</span>
+              <span className={`font-bold ${
+                darkMode ? 'text-white' : 'text-fresh-green'
+              }`}>{product.weight}</span>
             </div>
-            <div className="flex justify-between py-2 border-b border-fresh-green/10">
-              <span className="text-fresh-green/60">Delivery Time</span>
-              <span className="font-bold text-fresh-green">{product.deliveryTime}</span>
+            <div className={`flex justify-between py-2 border-b ${
+              darkMode ? 'border-gray-600' : 'border-fresh-green/10'
+            }`}>
+              <span className={darkMode ? 'text-gray-400' : 'text-fresh-green/60'}>Delivery Time</span>
+              <span className={`font-bold ${
+                darkMode ? 'text-white' : 'text-fresh-green'
+              }`}>{product.deliveryTime}</span>
             </div>
             <div className="flex justify-between py-2">
-              <span className="text-fresh-green/60">Price per unit</span>
-              <span className="font-bold text-fresh-green">₹{product.price}</span>
+              <span className={darkMode ? 'text-gray-400' : 'text-fresh-green/60'}>Price per unit</span>
+              <span className={`font-bold ${
+                darkMode ? 'text-white' : 'text-fresh-green'
+              }`}>₹{product.price}</span>
             </div>
           </div>
         </motion.div>
@@ -209,9 +236,13 @@ const ProductDetails = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-white rounded-2xl p-4 shadow-sm border border-fresh-green/10"
+          className={`rounded-2xl p-4 shadow-sm border transition-colors ${
+            darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-fresh-green/10'
+          }`}
         >
-          <h3 className="font-black text-fresh-green mb-3">Why Choose Yumistry?</h3>
+          <h3 className={`font-black mb-3 ${
+            darkMode ? 'text-white' : 'text-fresh-green'
+          }`}>Why Choose Yumistry?</h3>
           <div className="space-y-3">
             {[
               { icon: '🚀', title: 'Fast Delivery', desc: 'Get it in 8-10 minutes' },
@@ -222,8 +253,12 @@ const ProductDetails = () => {
               <div key={index} className="flex items-start gap-3">
                 <span className="text-2xl">{item.icon}</span>
                 <div>
-                  <p className="font-bold text-sm text-fresh-green">{item.title}</p>
-                  <p className="text-xs text-fresh-green/60">{item.desc}</p>
+                  <p className={`font-bold text-sm ${
+                    darkMode ? 'text-white' : 'text-fresh-green'
+                  }`}>{item.title}</p>
+                  <p className={`text-xs ${
+                    darkMode ? 'text-gray-400' : 'text-fresh-green/60'
+                  }`}>{item.desc}</p>
                 </div>
               </div>
             ))}
@@ -235,14 +270,19 @@ const ProductDetails = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
-          className="flex items-center justify-center gap-2 py-4"
+          className="flex items-center justify-center gap-2 py-6"
         >
           <Leaf className="text-leaf" size={20} fill="#84cc16" />
-          <span className="text-sm font-bold text-fresh-green/60">
+          <span className={`text-sm font-bold ${
+            darkMode ? 'text-gray-400' : 'text-fresh-green/60'
+          }`}>
             Chemistry of Freshness
           </span>
         </motion.div>
       </div>
+
+      {/* Bottom Navigation */}
+      <BottomNav />
     </div>
   );
 };

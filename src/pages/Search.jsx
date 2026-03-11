@@ -8,6 +8,7 @@ import ProductCard from '../components/ProductCard';
 import CartStrip from '../components/CartStrip';
 import Header from '../components/Header';
 import BottomNav from '../components/BottomNav';
+import ProductNotFound from '../components/ProductNotFound';
 
 const Search = () => {
   const navigate = useNavigate();
@@ -249,10 +250,14 @@ const Search = () => {
               exit={{ opacity: 0 }}
             >
               <div className="mb-4">
-                <h3 className="text-base font-black text-fresh-green mb-1">
+                <h3 className={`text-base font-black mb-1 ${
+                  darkMode ? 'text-white' : 'text-fresh-green'
+                }`}>
                   Search Results
                 </h3>
-                <p className="text-xs text-fresh-green/60 font-medium">
+                <p className={`text-xs font-medium ${
+                  darkMode ? 'text-gray-400' : 'text-fresh-green/60'
+                }`}>
                   {filteredProducts.length} products found
                 </p>
               </div>
@@ -271,12 +276,8 @@ const Search = () => {
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-12">
-                  <div className="bg-fresh-green/10 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
-                    <SearchIcon size={32} className="text-fresh-green/40" />
-                  </div>
-                  <h3 className="text-lg font-bold text-fresh-green mb-2">No products found</h3>
-                  <p className="text-sm text-fresh-green/60">Try searching with different keywords</p>
+                <div className="mb-8">
+                  <ProductNotFound searchQuery={searchQuery} />
                 </div>
               )}
             </motion.div>
@@ -313,11 +314,21 @@ const Search = () => {
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: index * 0.05 }}
                       onClick={() => handleSearch(item)}
-                      className="w-full flex items-center gap-3 p-3 bg-white rounded-xl border border-fresh-green/10 hover:border-leaf/30 transition-all text-left"
+                      className={`w-full flex items-center gap-3 p-3 rounded-xl border transition-all text-left ${
+                        darkMode 
+                          ? 'bg-gray-800 border-gray-700 hover:border-green-500' 
+                          : 'bg-white border-fresh-green/10 hover:border-leaf/30'
+                      }`}
                     >
-                      <Clock size={16} className="text-fresh-green/40 flex-shrink-0" />
-                      <span className="text-sm font-medium text-fresh-green flex-1">{item}</span>
-                      <ArrowLeft size={16} className="text-fresh-green/40 rotate-180" />
+                      <Clock size={16} className={`flex-shrink-0 ${
+                        darkMode ? 'text-gray-400' : 'text-fresh-green/40'
+                      }`} />
+                      <span className={`text-sm font-medium flex-1 ${
+                        darkMode ? 'text-white' : 'text-fresh-green'
+                      }`}>{item}</span>
+                      <ArrowLeft size={16} className={`rotate-180 ${
+                        darkMode ? 'text-gray-400' : 'text-fresh-green/40'
+                      }`} />
                     </motion.button>
                   ))}
                 </div>
@@ -332,8 +343,10 @@ const Search = () => {
               className="mb-6"
             >
               <div className="flex items-center gap-2 mb-3">
-                <TrendingUp size={18} className="text-fresh-green/60" />
-                <h3 className="text-base font-black text-fresh-green">Popular Searches</h3>
+                <TrendingUp size={18} className={darkMode ? 'text-gray-400' : 'text-fresh-green/60'} />
+                <h3 className={`text-base font-black ${
+                  darkMode ? 'text-white' : 'text-fresh-green'
+                }`}>Popular Searches</h3>
               </div>
               <div className="flex flex-wrap gap-2">
                 {popularSearches.map((item, index) => (
@@ -343,7 +356,11 @@ const Search = () => {
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: index * 0.05 }}
                     onClick={() => handleSearch(item)}
-                    className="px-4 py-2 bg-white border-2 border-fresh-green/10 rounded-xl text-sm font-bold text-fresh-green hover:border-leaf hover:bg-leaf/5 transition-all"
+                    className={`px-4 py-2 border-2 rounded-xl text-sm font-bold transition-all ${
+                      darkMode 
+                        ? 'bg-gray-800 border-gray-700 text-white hover:border-green-500 hover:bg-green-500/10'
+                        : 'bg-white border-fresh-green/10 text-fresh-green hover:border-leaf hover:bg-leaf/5'
+                    }`}
                   >
                     {item}
                   </motion.button>
@@ -357,7 +374,9 @@ const Search = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
             >
-              <h3 className="text-base font-black text-fresh-green mb-3">Browse by Category</h3>
+              <h3 className={`text-base font-black mb-3 ${
+                darkMode ? 'text-white' : 'text-fresh-green'
+              }`}>Browse by Category</h3>
               <div className="grid grid-cols-3 gap-3">
                 {categories.map((category, index) => (
                   <motion.button
@@ -366,10 +385,16 @@ const Search = () => {
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: index * 0.05 }}
                     onClick={() => navigate(`/category/${category.name}`)}
-                    className="flex flex-col items-center gap-2 p-4 bg-white rounded-2xl border-2 border-fresh-green/10 hover:border-leaf/30 hover:scale-105 transition-all"
+                    className={`flex flex-col items-center gap-2 p-4 rounded-2xl border-2 transition-all ${
+                      darkMode 
+                        ? 'bg-gray-800 border-gray-700 hover:border-green-500 hover:scale-105'
+                        : 'bg-white border-fresh-green/10 hover:border-leaf/30 hover:scale-105'
+                    }`}
                   >
                     <span className="text-3xl">{category.icon}</span>
-                    <span className="text-xs font-bold text-fresh-green text-center">
+                    <span className={`text-xs font-bold text-center ${
+                      darkMode ? 'text-white' : 'text-fresh-green'
+                    }`}>
                       {category.name}
                     </span>
                   </motion.button>
