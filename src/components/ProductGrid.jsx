@@ -16,7 +16,7 @@ const ProductGrid = ({ filteredProducts, selectedCategory }) => {
       </div>
 
       {filteredProducts.length > 0 ? (
-        <div className="grid grid-cols-2 gap-3 mb-8">
+        <div className="grid grid-cols-3 gap-x-2 gap-y-6 mb-8">
           {filteredProducts.map((product, i) => (
             <motion.div
               key={product.id}

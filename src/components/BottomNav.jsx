@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, Search, Tag, Package, User } from 'lucide-react';
+import { Home, Search, Tag, Package, Store } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useDarkMode } from '../context/DarkModeContext';
@@ -14,7 +14,7 @@ const BottomNav = () => {
     { icon: Search, label: 'Search', path: '/search' },
     { icon: Tag, label: 'Offers', path: '/offers' },
     { icon: Package, label: 'Orders', path: '/orders' },
-    { icon: User, label: 'Account', path: '/account' },
+    { icon: Store, label: 'Wholesale', path: '/wholesale' },
   ];
 
   return (

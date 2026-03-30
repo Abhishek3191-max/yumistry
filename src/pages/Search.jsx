@@ -198,7 +198,7 @@ const Search = () => {
 
   return (
     <div className={`min-h-screen pb-20 transition-colors ${
-      darkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-[#f0fdf4] via-white to-[#ecfccb]'
+      darkMode ? 'bg-gray-900' : 'bg-white'
     }`}>
       <Header />
       
@@ -206,7 +206,7 @@ const Search = () => {
         {/* Search Bar */}
         <div className="relative mb-5">
           <SearchIcon className={`absolute left-4 top-1/2 -translate-y-1/2 ${
-            darkMode ? 'text-gray-400' : 'text-fresh-green/40'
+            darkMode ? 'text-gray-400' : 'text-[#7f1d1d]/40'
           }`} size={20} />
           <input
             type="text"
@@ -214,10 +214,10 @@ const Search = () => {
             onChange={(e) => handleSearch(e.target.value)}
             placeholder="Search for products..."
             autoFocus
-            className={`w-full pl-12 pr-20 py-3.5 rounded-xl border-2 outline-none transition-all font-medium text-sm ${
+            className={`w-full pl-12 pr-20 py-3.5 rounded-xl outline-none transition-all font-medium text-sm ${
               darkMode 
-                ? 'bg-gray-800 border-gray-700 text-white placeholder:text-gray-400 focus:border-green-500'
-                : 'bg-white border-fresh-green/10 text-black placeholder:text-fresh-green/30 focus:border-leaf'
+                ? 'bg-gray-800 border border-gray-700 text-white placeholder:text-gray-400 focus:border-[#f52d05]'
+                : 'bg-gray-100 text-black placeholder:text-gray-400 focus:bg-white'
             }`}
           />
           <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
@@ -226,7 +226,7 @@ const Search = () => {
               className={`p-2 rounded-full transition-all ${
                 isListening 
                   ? 'bg-red-500 text-white animate-pulse' 
-                  : 'hover:bg-fresh-green/10 text-fresh-green/60'
+                  : 'hover:bg-[#7f1d1d]/10 text-[#7f1d1d]/60'
               }`}
             >
               {isListening ? <MicOff size={18} /> : <Mic size={18} />}
@@ -234,9 +234,9 @@ const Search = () => {
             {searchQuery && (
               <button
                 onClick={clearSearch}
-                className="p-2 hover:bg-fresh-green/10 rounded-full transition-colors"
+                className="p-2 hover:bg-[#7f1d1d]/10 rounded-full transition-colors"
               >
-                <X size={18} className="text-fresh-green/60" />
+                <X size={18} className="text-[#7f1d1d]/60" />
               </button>
             )}
           </div>
@@ -251,12 +251,12 @@ const Search = () => {
             >
               <div className="mb-4">
                 <h3 className={`text-base font-black mb-1 ${
-                  darkMode ? 'text-white' : 'text-fresh-green'
+                  darkMode ? 'text-white' : 'text-[#7f1d1d]'
                 }`}>
                   Search Results
                 </h3>
                 <p className={`text-xs font-medium ${
-                  darkMode ? 'text-gray-400' : 'text-fresh-green/60'
+                  darkMode ? 'text-gray-400' : 'text-[#7f1d1d]/60'
                 }`}>
                   {filteredProducts.length} products found
                 </p>
@@ -296,12 +296,12 @@ const Search = () => {
               >
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
-                    <Clock size={18} className="text-fresh-green/60" />
-                    <h3 className="text-base font-black text-fresh-green">Recent Searches</h3>
+                    <Clock size={18} className={darkMode ? 'text-gray-400' : 'text-[#7f1d1d]/60'} />
+                    <h3 className="text-base font-black text-[#7f1d1d]">Recent Searches</h3>
                   </div>
                   <button
                     onClick={clearHistory}
-                    className="text-xs font-bold text-leaf hover:underline"
+                    className="text-xs font-bold text-[#f52d05] hover:underline"
                   >
                     Clear All
                   </button>
@@ -316,18 +316,18 @@ const Search = () => {
                       onClick={() => handleSearch(item)}
                       className={`w-full flex items-center gap-3 p-3 rounded-xl border transition-all text-left ${
                         darkMode 
-                          ? 'bg-gray-800 border-gray-700 hover:border-green-500' 
-                          : 'bg-white border-fresh-green/10 hover:border-leaf/30'
+                          ? 'bg-gray-800 border-gray-700 hover:border-[#f52d05]' 
+                          : 'bg-white border-gray-100 hover:border-[#f52d05]/30'
                       }`}
                     >
-                      <Clock size={16} className={`flex-shrink-0 ${
-                        darkMode ? 'text-gray-400' : 'text-fresh-green/40'
+                      <Clock size={16} className={`shrink-0 ${
+                        darkMode ? 'text-gray-400' : 'text-[#7f1d1d]/40'
                       }`} />
                       <span className={`text-sm font-medium flex-1 ${
-                        darkMode ? 'text-white' : 'text-fresh-green'
+                        darkMode ? 'text-white' : 'text-[#7f1d1d]'
                       }`}>{item}</span>
                       <ArrowLeft size={16} className={`rotate-180 ${
-                        darkMode ? 'text-gray-400' : 'text-fresh-green/40'
+                        darkMode ? 'text-gray-400' : 'text-[#7f1d1d]/40'
                       }`} />
                     </motion.button>
                   ))}
@@ -343,9 +343,9 @@ const Search = () => {
               className="mb-6"
             >
               <div className="flex items-center gap-2 mb-3">
-                <TrendingUp size={18} className={darkMode ? 'text-gray-400' : 'text-fresh-green/60'} />
+                <TrendingUp size={18} className={darkMode ? 'text-gray-400' : 'text-[#7f1d1d]/60'} />
                 <h3 className={`text-base font-black ${
-                  darkMode ? 'text-white' : 'text-fresh-green'
+                  darkMode ? 'text-white' : 'text-[#7f1d1d]'
                 }`}>Popular Searches</h3>
               </div>
               <div className="flex flex-wrap gap-2">
@@ -356,10 +356,10 @@ const Search = () => {
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: index * 0.05 }}
                     onClick={() => handleSearch(item)}
-                    className={`px-4 py-2 border-2 rounded-xl text-sm font-bold transition-all ${
+                    className={`px-4 py-2 border rounded-xl text-sm font-bold transition-all ${
                       darkMode 
-                        ? 'bg-gray-800 border-gray-700 text-white hover:border-green-500 hover:bg-green-500/10'
-                        : 'bg-white border-fresh-green/10 text-fresh-green hover:border-leaf hover:bg-leaf/5'
+                        ? 'bg-gray-800 border-gray-700 text-white hover:border-[#f52d05] hover:bg-[#f52d05]/10'
+                        : 'bg-white border-gray-100 text-[#7f1d1d] hover:border-[#f52d05] hover:bg-[#f52d05]/5'
                     }`}
                   >
                     {item}
@@ -375,7 +375,7 @@ const Search = () => {
               transition={{ delay: 0.2 }}
             >
               <h3 className={`text-base font-black mb-3 ${
-                darkMode ? 'text-white' : 'text-fresh-green'
+                darkMode ? 'text-white' : 'text-[#7f1d1d]'
               }`}>Browse by Category</h3>
               <div className="grid grid-cols-3 gap-3">
                 {categories.map((category, index) => (
@@ -385,15 +385,15 @@ const Search = () => {
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: index * 0.05 }}
                     onClick={() => navigate(`/category/${category.name}`)}
-                    className={`flex flex-col items-center gap-2 p-4 rounded-2xl border-2 transition-all ${
+                    className={`flex flex-col items-center gap-2 p-4 rounded-2xl border transition-all ${
                       darkMode 
-                        ? 'bg-gray-800 border-gray-700 hover:border-green-500 hover:scale-105'
-                        : 'bg-white border-fresh-green/10 hover:border-leaf/30 hover:scale-105'
+                        ? 'bg-gray-800 border-gray-700 hover:border-[#f52d05] hover:scale-105'
+                        : 'bg-white border-gray-100 hover:border-[#f52d05]/30 hover:scale-105'
                     }`}
                   >
                     <span className="text-3xl">{category.icon}</span>
                     <span className={`text-xs font-bold text-center ${
-                      darkMode ? 'text-white' : 'text-fresh-green'
+                      darkMode ? 'text-white' : 'text-[#7f1d1d]'
                     }`}>
                       {category.name}
                     </span>

@@ -1,19 +1,22 @@
 import { BrowserRouter as Router } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
 import { DarkModeProvider } from './context/DarkModeContext';
+import { WishlistProvider } from './context/WishlistContext';
 import AppRoutes from './routes/AppRoutes';
 
 function App() {
   return (
     <DarkModeProvider>
       <CartProvider>
-        <Router>
-          <div className="flex justify-center bg-sand min-h-screen">
-            <div className="w-full max-w-[450px] bg-white shadow-2xl min-h-screen relative overflow-x-hidden">
-              <AppRoutes />
+        <WishlistProvider>
+          <Router>
+            <div className="flex justify-center bg-sand min-h-screen">
+              <div className="mobile-container w-full max-w-112.5 bg-white shadow-2xl min-h-screen relative overflow-x-hidden">
+                <AppRoutes />
+              </div>
             </div>
-          </div>
-        </Router>
+          </Router>
+        </WishlistProvider>
       </CartProvider>
     </DarkModeProvider>
   );

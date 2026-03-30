@@ -1,15 +1,17 @@
-import { ShoppingCart, User, Leaf, MapPin, ChevronDown } from 'lucide-react';
+import { ShoppingCart, User, Leaf, MapPin, ChevronDown, Heart } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { useWishlist } from '../context/WishlistContext';
 import { useDarkMode } from '../context/DarkModeContext';
 
 const HomeHeader = ({ selectedLocation, onLocationClick }) => {
   const navigate = useNavigate();
   const { getTotalItems } = useCart();
+  const { getTotalWishlistItems } = useWishlist();
   const { darkMode } = useDarkMode();
 
   return (
-    <div className={`backdrop-blur-xl border-b sticky top-0 transition-colors ${
+    <div className={`backdrop-blur-xl  sticky top-0 transition-colors ${
       darkMode ? 'bg-gray-800/90 border-gray-700' : 'bg-white/90 border-[#7f1d1d]/10'
     }`}>
       <div className="p-4">
@@ -22,8 +24,16 @@ const HomeHeader = ({ selectedLocation, onLocationClick }) => {
             <button onClick={() => navigate('/cart')} className="relative hover:scale-110 transition-transform">
               <ShoppingCart size={22} className="text-[#7f1d1d]" />
               {getTotalItems() > 0 && (
-                <span className="absolute -top-2 -right-2 bg-gradient-to-r from-[#7f1d1d] to-[#f52d05] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
+                <span className="absolute -top-2 -right-2 bg-linear-to-r from-[#7f1d1d] to-[#f52d05] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
                   {getTotalItems()}
+                </span>
+              )}
+            </button>
+            <button onClick={() => navigate('/wishlist')} className="relative hover:scale-110 transition-transform">
+              <Heart size={22} className="text-[#7f1d1d]" />
+              {getTotalWishlistItems() > 0 && (
+                <span className="absolute -top-2 -right-2 bg-linear-to-r from-[#7f1d1d] to-[#f52d05] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
+                  {getTotalWishlistItems()}
                 </span>
               )}
             </button>

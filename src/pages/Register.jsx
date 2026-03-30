@@ -60,18 +60,18 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#fff5f7] via-white to-[#ffe5ec] flex items-center justify-center p-4 sm:p-6 relative overflow-hidden">
+    <div className="min-h-screen bg-linear-to-br from-[#fff5f7] via-white to-[#ffe5ec] flex items-center justify-center p-4 sm:p-6 relative overflow-hidden">
       
       {/* Background Blobs */}
       <motion.div
         animate={{ scale: [1, 1.1, 1], opacity: [0.2, 0.3, 0.2] }}
         transition={{ duration: 8, repeat: Infinity }}
-        className="absolute top-10 right-10 w-48 h-48 sm:w-72 sm:h-72 bg-gradient-to-br from-[#7f1d1d]/20 to-[#f52d05]/10 rounded-full blur-3xl"
+        className="absolute top-10 right-10 w-48 h-48 sm:w-72 sm:h-72 bg-linear-to-br from-[#7f1d1d]/20 to-[#f52d05]/10 rounded-full blur-3xl"
       />
       <motion.div
         animate={{ scale: [1, 1.2, 1], opacity: [0.15, 0.25, 0.15] }}
         transition={{ duration: 10, repeat: Infinity }}
-        className="absolute bottom-10 left-10 w-56 h-56 sm:w-80 sm:h-80 bg-gradient-to-tl from-[#ff6b9d]/30 to-[#7f1d1d]/10 rounded-full blur-3xl"
+        className="absolute bottom-10 left-10 w-56 h-56 sm:w-80 sm:h-80 bg-linear-to-tl from-[#ff6b9d]/30 to-[#7f1d1d]/10 rounded-full blur-3xl"
       />
 
       {/* Form Container */}
@@ -165,7 +165,7 @@ const Register = () => {
             type="submit"
             disabled={isLoading}
             whileTap={{ scale: isLoading ? 1 : 0.97 }}
-            className="w-full bg-gradient-to-r from-[#7f1d1d] to-[#f52d05] text-white py-4 rounded-xl font-bold text-base shadow-lg hover:shadow-xl transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="w-full bg-linear-to-r from-[#7f1d1d] to-[#f52d05] text-white py-4 rounded-xl font-bold text-base shadow-lg hover:shadow-xl transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {isLoading ? (
               <>

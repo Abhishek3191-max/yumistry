@@ -18,35 +18,31 @@ const CartStrip = () => {
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: 100, opacity: 0 }}
         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-        className="fixed bottom-16 left-0 right-0 z-50 px-4 pointer-events-none"
+        className="fixed bottom-20 left-0 right-0 z-50 px-4 pointer-events-none"
       >
-        <div className="max-w-[450px] mx-auto">
+        <div className="max-w-[450px] mx-auto pointer-events-auto">
           <motion.div
             whileTap={{ scale: 0.97 }}
             onClick={() => navigate('/cart')}
-            className="bg-gradient-to-r from-[#7f1d1d] to-[#f52d05] rounded-xl shadow-2xl p-4 cursor-pointer flex items-center justify-between"
+            className="bg-gradient-to-r from-[#7f1d1d] to-[#f52d05] rounded-2xl shadow-xl px-4 py-2.5 cursor-pointer flex items-center justify-between"
           >
-            {/* Left Section - Items & Total */}
-            <div className="flex items-center gap-3">
-              <div className={`backdrop-blur-sm rounded-lg p-2 ${
-                darkMode ? 'bg-gray-700/50' : 'bg-white/20'
-              }`}>
-                <ShoppingBag size={22} className="text-white" strokeWidth={2.5} />
+            {/* Left - Items & Total */}
+            <div className="flex items-center gap-2.5">
+              <div className="bg-white/20 rounded-xl p-1.5">
+                <ShoppingBag size={18} className="text-white" strokeWidth={2.5} />
               </div>
               <div className="text-white">
-                <p className="text-base font-black">
-                  {getTotalItems()} {getTotalItems() === 1 ? 'Item' : 'Items'} | ₹{getSubtotal()}
+                <p className="text-sm font-black leading-tight">
+                  {getTotalItems()} {getTotalItems() === 1 ? 'Item' : 'Items'} · ₹{getSubtotal()}
                 </p>
-                <p className="text-xs opacity-90 font-medium">Plus taxes</p>
+                <p className="text-[10px] opacity-80 font-medium">Plus taxes</p>
               </div>
             </div>
 
-            {/* Right Section - View Cart Button */}
-            <div className={`flex items-center gap-2 backdrop-blur-sm rounded-lg px-4 py-2 ${
-              darkMode ? 'bg-gray-700/50' : 'bg-white/20'
-            }`}>
-              <span className="text-white font-bold text-sm">View Cart</span>
-              <ArrowRight size={18} className="text-white" strokeWidth={3} />
+            {/* Right - View Cart */}
+            <div className="flex items-center gap-1 bg-white/20 rounded-xl px-3 py-1.5">
+              <span className="text-white font-bold text-xs">View Cart</span>
+              <ArrowRight size={14} className="text-white" strokeWidth={3} />
             </div>
           </motion.div>
         </div>

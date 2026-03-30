@@ -1,4 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
+import AdminRoutes from '../admin/AdminRoutes';
 
 // Auth Pages
 import SplashScreen from '../pages/SplashScreen';
@@ -13,6 +14,7 @@ import Offers from '../pages/Offers';
 
 // Product Pages
 import CategoryPage from '../pages/CategoryPage';
+import SubCategoryPage from '../pages/SubCategoryPage';
 import ProductDetails from '../pages/ProductDetails';
 
 // Cart & Order Pages
@@ -28,6 +30,7 @@ import Wishlist from '../pages/Wishlist';
 import Addresses from '../pages/Addresses';
 import Wallet from '../pages/Wallet';
 import Settings from '../pages/Settings';
+import Wholesale from '../pages/Wholesale';
 
 const AppRoutes = () => {
   return (
@@ -46,7 +49,8 @@ const AppRoutes = () => {
       <Route path="/offers" element={<Offers />} />                       {/* Offers & deals page */}
 
       {/* Product Routes */}
-      <Route path="/category/:categoryName" element={<CategoryPage />} /> {/* Category listing page */}
+      <Route path="/category/:categoryName" element={<CategoryPage />} />
+      <Route path="/subcategory/:subCategoryName" element={<SubCategoryPage />} /> {/* Category listing page */}
       <Route path="/product/:productId" element={<ProductDetails />} />   {/* Product detail page */}
 
       {/* Cart & Order Routes */}
@@ -61,9 +65,13 @@ const AppRoutes = () => {
       <Route path="/wishlist" element={<Wishlist />} />                   {/* Wishlist page */}
       <Route path="/addresses" element={<Addresses />} />                 {/* Saved addresses page */}
       <Route path="/wallet" element={<Wallet />} />                       {/* Wallet & balance page */}
+      <Route path="/wholesale" element={<Wholesale />} />
       <Route path="/settings" element={<Settings />} />                   {/* App settings page */}
 
-      {/* Fallback - Redirect unknown routes to home */}
+      {/* Admin Routes */}
+      <Route path="/admin/*" element={<AdminRoutes />} />
+
+      {/* Fallback */}
       <Route path="*" element={<Navigate to="/home" />} />
     </Routes>
   );

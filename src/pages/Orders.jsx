@@ -57,7 +57,7 @@ const Orders = () => {
 
   return (
     <div className={`min-h-screen pb-20 transition-colors ${
-      darkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-[#f0fdf4] via-white to-[#ecfccb]'
+      darkMode ? 'bg-gray-900' : 'bg-linear-to-br from-[#f0fdf4] via-white to-[#ecfccb]'
     }`}>
       <Header />
       
@@ -157,7 +157,7 @@ const Orders = () => {
             <motion.button
               whileTap={{ scale: 0.95 }}
               onClick={() => navigate('/home')}
-              className="bg-gradient-to-r from-fresh-green to-leaf text-white px-8 py-3 rounded-xl font-bold shadow-lg"
+              className="bg-linear-to-r from-fresh-green to-leaf text-white px-8 py-3 rounded-xl font-bold shadow-lg"
             >
               Start Shopping
             </motion.button>

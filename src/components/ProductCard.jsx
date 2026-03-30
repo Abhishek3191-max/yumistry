@@ -1,5 +1,5 @@
 import { useCart } from '../context/CartContext';
-import { Plus, Minus, Heart } from 'lucide-react';
+import { Plus, Minus, Heart, Star, Clock } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
@@ -9,103 +9,99 @@ const ProductCard = ({ product }) => {
   const { addToCart, removeFromCart, getItemQuantity } = useCart();
   const quantity = getItemQuantity(product.id);
   const [isWishlisted, setIsWishlisted] = useState(false);
-  const discount = product.originalPrice > product.price 
+  const discount = product.originalPrice > product.price
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
     : 0;
 
-  const toggleWishlist = (e) => {
-    e.stopPropagation();
-    setIsWishlisted(!isWishlisted);
-  };
-
   return (
-    <motion.div 
-      whileHover={{ y: -4 }}
-      className="bg-white border border-[#7f1d1d]/10 rounded-2xl p-4 shadow-sm hover:shadow-lg transition-all relative"
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="flex flex-col cursor-pointer"
     >
-      {/* Discount Badge */}
-      {discount > 0 && (
-        <div className="absolute top-2 left-2 bg-gradient-to-r from-[#7f1d1d] to-[#f52d05] text-white text-[10px] font-bold px-2 py-0.5 rounded-md z-10">
-          {discount}% OFF
-        </div>
-      )}
-
-      {/* Wishlist Heart Button */}
-      <motion.button
-        whileTap={{ scale: 0.9 }}
-        onClick={toggleWishlist}
-        className="absolute top-2 right-2 p-1.5 bg-white rounded-full shadow-md hover:scale-110 transition-transform z-10"
-      >
-        <Heart
-          size={16}
-          className={isWishlisted ? 'text-red-500 fill-red-500' : 'text-[#7f1d1d]/60'}
-          strokeWidth={2.5}
-        />
-      </motion.button>
-
-      {/* Product Image */}
-      <div 
-        onClick={() => navigate(`/product/${product.id}`)}
-        className="w-full aspect-square flex items-center justify-center mb-3 rounded-xl overflow-hidden bg-white cursor-pointer"
-      >
-        <img 
-          src={product.image} 
-          className="w-full h-full object-contain" 
+      {/* Image Box */}
+      <div className="relative w-full aspect-square rounded-2xl overflow-visible bg-[#f5f5f5] mb-5">
+        <img
+          src={product.image}
           alt={product.name}
+          className="w-full h-full object-contain rounded-2xl"
           loading="lazy"
+          onClick={() => navigate(`/product/${product.id}`)}
         />
-      </div>
 
-      {/* Product Info */}
-      <div 
-        onClick={() => navigate(`/product/${product.id}`)}
-        className="space-y-1 cursor-pointer"
-      >
-        <h4 className="font-bold text-sm text-[#7f1d1d] line-clamp-2 leading-tight">
-          {product.name}
-        </h4>
-        <p className="text-[11px] text-[#7f1d1d]/50 font-semibold">
-          {product.weight}
-        </p>
+        {/* Wishlist */}
+        <motion.button
+          whileTap={{ scale: 0.85 }}
+          onClick={(e) => { e.stopPropagation(); setIsWishlisted(!isWishlisted); }}
+          className="absolute top-2 right-2 w-7 h-7 bg-white rounded-full flex items-center justify-center shadow"
+        >
+          <Heart
+            size={14}
+            className={isWishlisted ? 'text-red-500 fill-red-500' : 'text-gray-400'}
+            strokeWidth={2.5}
+          />
+        </motion.button>
 
-        {/* Price Section */}
-        <div className="flex items-center gap-2 pt-1">
-          <span className="font-bold text-base text-[#7f1d1d]">₹{product.price}</span>
-          {discount > 0 && (
-            <span className="text-xs text-gray-400 line-through">₹{product.originalPrice}</span>
+        {/* ADD / Quantity — half inside half outside image bottom right */}
+        <div className="absolute -bottom-3 right-1.5 z-10">
+          {quantity === 0 ? (
+            <motion.button
+              whileTap={{ scale: 0.92 }}
+              onClick={() => addToCart(product)}
+              className="bg-white border-2 border-[#f52d05] text-[#f52d05] font-black text-[10px] px-3 py-0.5 rounded-lg shadow-md"
+            >
+              ADD
+            </motion.button>
+          ) : (
+            <div className="flex items-center gap-1 bg-[#f52d05] rounded-lg px-1.5 py-0.5 shadow-md">
+              <motion.button whileTap={{ scale: 0.9 }} onClick={() => removeFromCart(product.id)}>
+                <Minus size={11} strokeWidth={3} className="text-white" />
+              </motion.button>
+              <span className="text-white font-black text-[11px] px-0.5">{quantity}</span>
+              <motion.button whileTap={{ scale: 0.9 }} onClick={() => addToCart(product)}>
+                <Plus size={11} strokeWidth={3} className="text-white" />
+              </motion.button>
+            </div>
           )}
         </div>
       </div>
 
-      {/* Add to Cart Button */}
-      <div className="mt-3">
-        {quantity === 0 ? (
-          <motion.button
-            whileTap={{ scale: 0.95 }}
-            onClick={() => addToCart(product)}
-            className="w-full bg-white border-2 border-[#f52d05] text-[#f52d05] font-bold text-sm py-2 rounded-lg hover:bg-gradient-to-r hover:from-[#7f1d1d] hover:to-[#f52d05] hover:text-white transition-all"
-          >
-            ADD
-          </motion.button>
-        ) : (
-          <div className="flex items-center justify-between bg-gradient-to-r from-[#7f1d1d] to-[#f52d05] rounded-lg p-1">
-            <motion.button
-              whileTap={{ scale: 0.9 }}
-              onClick={() => removeFromCart(product.id)}
-              className="bg-white text-[#f52d05] rounded-md p-1.5 hover:bg-[#7f1d1d]/10 transition-colors"
-            >
-              <Minus size={14} strokeWidth={3} />
-            </motion.button>
-            <span className="text-white font-bold text-sm px-3">{quantity}</span>
-            <motion.button
-              whileTap={{ scale: 0.9 }}
-              onClick={() => addToCart(product)}
-              className="bg-white text-[#f52d05] rounded-md p-1.5 hover:bg-[#7f1d1d]/10 transition-colors"
-            >
-              <Plus size={14} strokeWidth={3} />
-            </motion.button>
+      {/* Details */}
+      <div onClick={() => navigate(`/product/${product.id}`)} className="px-0.5">
+        {/* Weight + discount tag */}
+        <p className="text-[10px] text-gray-400 font-semibold mb-0.5">{product.weight}</p>
+
+        {/* Product Name */}
+        <h4 className="font-bold text-[11px] text-gray-900 line-clamp-2 leading-tight mb-0.5">
+          {product.name}
+        </h4>
+
+        {/* Stars + Delivery */}
+        <div className="flex items-center gap-2 mb-1">
+          <div className="flex items-center gap-0.5">
+            {[1,2,3,4].map(s => (
+              <Star key={s} size={10} className="text-yellow-400 fill-yellow-400" />
+            ))}
+            <Star size={10} className="text-gray-300 fill-gray-300" />
           </div>
+          <div className="flex items-center gap-0.5 text-[10px] text-[#f52d05] font-semibold">
+            <Clock size={10} />
+            <span>{product.deliveryTime}</span>
+          </div>
+        </div>
+
+        {/* Discount */}
+        {discount > 0 && (
+          <p className="text-[10px] font-bold text-[#f52d05] mb-0.5">{discount}% OFF</p>
         )}
+
+        {/* Price */}
+        <div className="flex items-center gap-1.5">
+          <span className="font-black text-[12px] text-gray-900">₹{product.price}</span>
+          {discount > 0 && (
+            <span className="text-[10px] text-gray-400 line-through">₹{product.originalPrice}</span>
+          )}
+        </div>
       </div>
     </motion.div>
   );

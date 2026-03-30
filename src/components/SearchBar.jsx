@@ -5,7 +5,7 @@ const SearchBar = ({ searchQuery, setSearchQuery, isListening, startVoiceSearch,
   const { darkMode } = useDarkMode();
 
   return (
-    <div className="relative mb-5">
+    <div className="relative ">
       <Search className={`absolute left-4 top-1/2 -translate-y-1/2 ${
         darkMode ? 'text-gray-400' : 'text-[#7f1d1d]/40'
       }`} size={20} />
@@ -14,10 +14,10 @@ const SearchBar = ({ searchQuery, setSearchQuery, isListening, startVoiceSearch,
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
         placeholder="Search for vegetables, fruits, dairy..." 
-        className={`w-full pl-12 pr-16 py-3.5 rounded-xl border-2 outline-none transition-all font-medium text-sm shadow-sm ${
+        className={`w-full pl-12 pr-16 py-3.5 rounded-xl outline-none transition-all font-medium text-sm ${
           darkMode 
-            ? 'bg-gray-800 border-gray-700 text-white placeholder:text-gray-400 focus:border-green-500'
-            : 'bg-white border-[#7f1d1d]/10 text-black placeholder:text-[#7f1d1d]/30 focus:border-[#f52d05]'
+            ? 'bg-gray-800 border border-gray-700 text-white placeholder:text-gray-400 focus:border-green-500'
+            : 'bg-gray-100 text-black placeholder:text-gray-400 focus:bg-white'
         }`}
       />
       <button

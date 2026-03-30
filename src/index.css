@@ -29,3 +29,12 @@
     display: none;
   }
 }
+
+.swal2-container {
+  z-index: 99999 !important;
+}
+
+.swal2-toast {
+  border-radius: 16px !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18) !important;
+}

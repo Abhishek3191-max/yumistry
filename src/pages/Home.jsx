@@ -9,7 +9,10 @@ import Categories from '../components/Categories';
 import ProductGrid from '../components/ProductGrid';
 import CartStrip from '../components/CartStrip';
 import BottomNav from '../components/BottomNav';
+import CategorySection from '../components/CategorySection';
+import TopCategories from '../components/TopCategories';
 import WhatsAppCTA from '../components/WhatsAppCTA';
+import Banner from '../components/Banner';
 import LocationModal from '../components/LocationModal';
 
 const Home = () => {
@@ -93,7 +96,7 @@ const Home = () => {
 
   return (
     <div className={`min-h-screen pb-20 relative overflow-hidden transition-colors ${
-      darkMode ? 'bg-gray-900' : 'bg-linear-to-br from-[#fff5f7] via-white to-[#ffe5ec]'
+      darkMode ? 'bg-gray-900' : ''
     }`}>
       <motion.div
         animate={{ scale: [1, 1.1, 1], opacity: [0.1, 0.2, 0.1] }}
@@ -106,22 +109,27 @@ const Home = () => {
         className="absolute bottom-0 left-0 w-80 h-80 bg-linear-to-tl from-[#ff6b9d]/20 to-[#7f1d1d]/10 rounded-full blur-3xl"
       />
 
-      <HomeHeader selectedLocation={selectedLocation} onLocationClick={() => setShowLocationModal(true)} />
+      {/* Fixed Header + SearchBar */}
+      <div className={`fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-112.5 z-50 ${
+        darkMode ? 'bg-gray-900' : 'bg-white'
+      }`}>
+        <HomeHeader selectedLocation={selectedLocation} onLocationClick={() => setShowLocationModal(true)} />
+        <div className="px-4 mb-2 ">
+          <SearchBar
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            isListening={isListening}
+            startVoiceSearch={startVoiceSearch}
+            stopVoiceSearch={stopVoiceSearch}
+          />
+        </div>
+      </div>
 
-      <div className="relative z-10 px-4 py-4">
-        <SearchBar 
-          searchQuery={searchQuery} 
-          setSearchQuery={setSearchQuery} 
-          isListening={isListening}
-          startVoiceSearch={startVoiceSearch}
-          stopVoiceSearch={stopVoiceSearch}
-        />
-        <OfferBanner />
-        <Categories 
-          categories={categories} 
-          selectedCategory={selectedCategory} 
-          setSelectedCategory={setSelectedCategory} 
-        />
+      {/* Scrollable Content — top padding to offset fixed header */}
+      <div className="relative z-10 px-4 pt-42 pb-4">
+        <Banner />
+        <TopCategories />
+        <CategorySection />
         <ProductGrid filteredProducts={filteredProducts} selectedCategory={selectedCategory} />
         <WhatsAppCTA />
       </div>
